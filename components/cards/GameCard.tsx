@@ -17,7 +17,7 @@ export function GameCard({ game, index = 0, scenarioId, onClick }: GameCardProps
   return (
     <button
       aria-label={`Open ${game.title}`}
-      className="relative h-[142px] w-[113px] shrink-0 overflow-hidden rounded-lg bg-[#8c96a1] text-center text-white"
+      className="relative h-[142px] w-[113px] shrink-0 overflow-hidden rounded-lg bg-[#8c96a1] text-center text-white transition hover:bg-[#7f8a96] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700 active:scale-[0.98]"
       onClick={() => onClick(game)}
       type="button"
     >
