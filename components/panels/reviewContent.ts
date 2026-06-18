@@ -23,7 +23,7 @@ export const scenarioReviewCopy: Record<ScenarioId, ReviewCopy> = {
     playerState: "Returning player with recent game signals",
     whyLane:
       "Recently played and similarity signals guide ordering, but no next-best-action is strong enough for a hero.",
-    carouselChanges: "Balanced carousel with recently played games appearing first.",
+    carouselChanges: "No-hero carousel with recently played games appearing first.",
     rankingLogic:
       "Recently played, similar categories and live availability lift familiar games while preserving variety.",
     complianceNote:
@@ -47,6 +47,54 @@ export const scenarioReviewCopy: Record<ScenarioId, ReviewCopy> = {
       "Same-pool games are prioritised first, then the lane fills with eligible ranked games.",
     complianceNote:
       "The tile avoids urgency, due-to-drop language and claims about likelihood of winning.",
+  },
+};
+
+export type ScenarioInspectorCopy = {
+  playerState: string;
+  trigger: string;
+  carouselMode: string;
+  heroBehaviour: string;
+  orderingLogic: string;
+  complianceNote: string;
+};
+
+export const scenarioInspectorCopy: Record<ScenarioId, ScenarioInspectorCopy> = {
+  "new-player": {
+    playerState: "No player history",
+    trigger: "First lobby visit or insufficient personalisation data",
+    carouselMode: "Hero Carousel",
+    heroBehaviour: "Featured Game Hero appears as the first carousel item",
+    orderingLogic:
+      "Cold-start logic uses local-market performance, category balance, mobile readiness and editorial priority.",
+    complianceNote: "No crash games. No bonus-led or misleading winning claims.",
+  },
+  "returning-player": {
+    playerState: "Has recent play history",
+    trigger: "Returning user with no stronger reward or event signal",
+    carouselMode: "No Hero Carousel",
+    heroBehaviour: "No hero tile shown",
+    orderingLogic:
+      "Recently Played games appear first, followed by similar games, local-market top games and live/table options.",
+    complianceNote: "Avoid unnecessary content dominance and misleading claims.",
+  },
+  "daily-picks-available": {
+    playerState: "Daily Picks available",
+    trigger: "Reward / promotion state is active",
+    carouselMode: "Hero Carousel",
+    heroBehaviour: "Daily Picks Hero appears as the first carousel item",
+    orderingLogic: "Daily Picks card leads the lane, followed by eligible supporting games.",
+    complianceNote:
+      "Daily Picks is treated as a reward/promotion card, not a standard game tile. Key conditions are visible.",
+  },
+  "jackpot-event-available": {
+    playerState: "Jackpot event available",
+    trigger: "Multiple eligible games are linked to a shared jackpot pool",
+    carouselMode: "Hero Carousel",
+    heroBehaviour: "Jackpot Pool Hero appears as the first carousel item",
+    orderingLogic:
+      "Linked jackpot games appear first, followed by other eligible casino picks.",
+    complianceNote: "Avoid urgency language such as hot, due to drop or win now.",
   },
 };
 

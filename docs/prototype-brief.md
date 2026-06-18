@@ -10,8 +10,8 @@ The prototype is designed around an iPhone 16 Pro Max lobby preview: 440px wide 
 
 - New Player: uses a featured-game hero tile to reduce first-visit decision friction.
 - Returning Player: removes the hero tile and uses a two-row compact carousel so resume and discovery signals do not over-dominate the lane.
-- Daily Picks Available: uses a Daily Picks reward/promotion tile as the first carousel item with key conditions visible.
-- Jackpot Event Available: uses a jackpot-pool tile as the first carousel item and groups linked games without urgency or winning claims.
+- Daily Picks: uses a Daily Picks reward/promotion tile as the first carousel item with key conditions visible.
+- Jackpot Event: uses a jackpot-pool tile as the first carousel item and groups linked games without urgency or winning claims.
 
 ## Hero Tile Types
 

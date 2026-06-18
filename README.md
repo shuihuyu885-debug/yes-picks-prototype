@@ -32,8 +32,8 @@ npm run build
 
 - New Player
 - Returning Player
-- Daily Picks Available
-- Jackpot Event Available
+- Daily Picks
+- Jackpot Event
 
 ## Intended submission format
 
