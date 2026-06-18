@@ -8,6 +8,7 @@ import { PhoneFrame } from "@/components/lobby/PhoneFrame";
 import { AnnotationPanel } from "@/components/panels/AnnotationPanel";
 import { ConfigPanel } from "@/components/panels/ConfigPanel";
 import { HypothesisCard } from "@/components/panels/HypothesisCard";
+import { WalkthroughPanel } from "@/components/panels/WalkthroughPanel";
 import { getGamesForScenario, getScenarioById } from "@/data/ranking";
 import { scenarios } from "@/data/scenarios";
 import { getHeroDecision } from "@/lib/heroDecision";
@@ -15,6 +16,7 @@ import type { ScenarioId } from "@/lib/types";
 
 export default function Home() {
   const [activeScenario, setActiveScenario] = useState<ScenarioId>("new-player");
+  const [walkthroughEnabled, setWalkthroughEnabled] = useState(false);
   const scenario = useMemo(() => getScenarioById(activeScenario), [activeScenario]);
   const hero = useMemo(() => getHeroDecision(scenario), [scenario]);
   const rankedGames = useMemo(() => getGamesForScenario(activeScenario), [activeScenario]);
@@ -40,6 +42,8 @@ export default function Home() {
               ranking notes and compliance assumptions live here outside the player-facing UI.
             </p>
           </div>
+
+          <WalkthroughPanel enabled={walkthroughEnabled} onToggle={setWalkthroughEnabled} />
 
           <ScenarioSwitcher
             activeScenario={activeScenario}

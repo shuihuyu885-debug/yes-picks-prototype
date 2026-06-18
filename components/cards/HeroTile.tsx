@@ -114,7 +114,7 @@ function JackpotPoolHero({
           <button
             key={label}
             aria-label={`View ${label} linked to Yes Pots`}
-            className="flex items-center justify-center rounded-t-[58px] rounded-b-lg bg-[#b1b1b1] px-3 text-center text-base font-bold italic leading-5 text-white"
+            className="flex items-center justify-center rounded-t-[58px] rounded-b-lg bg-[#b1b1b1] px-3 text-center text-base font-bold italic leading-5 text-white transition hover:bg-[#9fa3a8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700"
             onClick={onCtaClick}
             type="button"
           >
@@ -125,11 +125,11 @@ function JackpotPoolHero({
 
       <button
         aria-label="View Yes Pots details"
-        className="sr-only"
+        className="absolute bottom-3 left-4 z-20 grid h-10 w-10 place-items-center rounded-full bg-white/35 text-xl font-bold leading-none text-white transition hover:bg-white/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         onClick={onInfoClick}
         type="button"
       >
-        View details
+        i
       </button>
     </article>
   );
@@ -162,7 +162,7 @@ function WireframeHeroShell({
 
       <button
         aria-label={infoLabel}
-        className="absolute bottom-2.5 left-2.5 grid h-11 w-11 place-items-center rounded-full bg-white/45 text-[1.4rem] font-bold leading-none text-white"
+        className="absolute bottom-2.5 left-2.5 grid h-11 w-11 place-items-center rounded-full bg-white/45 text-[1.4rem] font-bold leading-none text-white transition hover:bg-white/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         onClick={onInfoClick}
         type="button"
       >
@@ -170,7 +170,7 @@ function WireframeHeroShell({
       </button>
       <button
         aria-label={ctaLabel}
-        className="absolute bottom-2.5 left-[61px] flex h-11 w-40 items-center justify-center rounded-lg border border-white bg-[#4a5259] text-sm font-bold text-white"
+        className="absolute bottom-2.5 left-[61px] flex h-11 w-40 items-center justify-center rounded-lg border border-white bg-[#4a5259] text-sm font-bold text-white transition hover:bg-[#3f474e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         onClick={onCtaClick}
         type="button"
       >

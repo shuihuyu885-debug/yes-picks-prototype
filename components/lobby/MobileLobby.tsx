@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   CircleUserRound,
   Gift,
@@ -12,6 +14,7 @@ import {
   Wifi,
 } from "lucide-react";
 import { YesPicksLane } from "@/components/lane/YesPicksLane";
+import { BottomSheet } from "@/components/lobby/BottomSheet";
 import type { HeroType, RankedGame, Scenario, ScenarioId } from "@/lib/types";
 
 const categories = ["Slots", "Jackpots", "Table Games", "Slingo", "Bingo", "Live Casino"];
@@ -28,17 +31,87 @@ type MobileLobbyProps = {
   scenarioId?: ScenarioId;
 };
 
+type SheetContent = {
+  title: string;
+  body?: string;
+  bullets?: string[];
+};
+
+const infoSheetByHero: Record<Exclude<HeroType, "none">, SheetContent> = {
+  "featured-game": {
+    title: "Why this pick?",
+    bullets: [
+      "Featured for this scenario based on editorial or launch priority",
+      "Eligible for Denmark",
+      "Mobile-ready",
+      "Balanced with supporting recommendations",
+      "Commercial priority cannot override eligibility or responsible-gambling guardrails",
+    ],
+  },
+  "daily-picks": {
+    title: "Daily Picks details",
+    bullets: [
+      "This is treated as a reward/promotion card, not a standard game tile",
+      "First deposit required",
+      "Prize cap applies",
+      "Terms apply",
+      "Copy avoids aggressive free/win messaging in the lane",
+    ],
+  },
+  "jackpot-pool": {
+    title: "Jackpot pool details",
+    bullets: [
+      "These games are linked to the same jackpot pool",
+      "Jackpot amounts are shown in DKK",
+      "Eligibility and game rules must be available before launch",
+      "Avoids urgency language such as hot or due to drop",
+    ],
+  },
+};
+
+const ctaSheetByHero: Record<Exclude<HeroType, "none">, SheetContent> = {
+  "featured-game": {
+    title: "Game launch simulated",
+    body: "In production, this would call the EveryMatrix game launch flow for the selected game.",
+  },
+  "daily-picks": {
+    title: "Daily Picks simulated",
+    body: "In production, this would open the reward details and eligible games. Key terms would be visible before play.",
+  },
+  "jackpot-pool": {
+    title: "Jackpot pool simulated",
+    body: "In production, this would open the jackpot pool detail view and linked eligible games.",
+  },
+};
+
 export function MobileLobby({ scenarioId = "new-player" }: MobileLobbyProps) {
+  const [sheet, setSheet] = useState<SheetContent | null>(null);
+
   const handleInfoClick = (heroType: HeroType, scenario: Scenario) => {
+    if (heroType === "none") {
+      return;
+    }
+
     console.log("Yes Picks hero info", { heroType, scenarioId: scenario.id });
+    setSheet(infoSheetByHero[heroType]);
   };
 
   const handleCtaClick = (heroType: HeroType, scenario: Scenario) => {
     console.log("Yes Picks hero CTA", { heroType, scenarioId: scenario.id });
+    if (heroType === "none") {
+      return;
+    }
+
+    setSheet(ctaSheetByHero[heroType]);
   };
 
   const handleGameClick = (game: RankedGame) => {
     console.log("Yes Picks game", { gameId: game.id, title: game.title });
+    setSheet({
+      title: "Game launch simulated",
+      body: "This prototype does not connect to a real backend.",
+      bullets: [`Selected game: ${game.title}`],
+    });
   };
 
   return (
@@ -47,7 +120,13 @@ export function MobileLobby({ scenarioId = "new-player" }: MobileLobbyProps) {
         <StatusBar />
         <TopBrandBar />
         <CategoryNav />
-        <main className="pt-[15px]">
+        <motion.main
+          key={scenarioId}
+          animate={{ opacity: 1, y: 0 }}
+          className="pt-[15px]"
+          initial={{ opacity: 0, y: 8 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+        >
           <HeroPlaceholder />
           <div className="mt-[10px] px-5">
             <YesPicksLane
@@ -58,9 +137,16 @@ export function MobileLobby({ scenarioId = "new-player" }: MobileLobbyProps) {
             />
           </div>
           <GenericSectionPlaceholder />
-        </main>
+        </motion.main>
       </div>
       <BottomNav />
+      <BottomSheet
+        body={sheet?.body}
+        bullets={sheet?.bullets}
+        onClose={() => setSheet(null)}
+        open={Boolean(sheet)}
+        title={sheet?.title ?? ""}
+      />
     </div>
   );
 }
@@ -86,7 +172,7 @@ function TopBrandBar() {
         <span>Dkk 300.00</span>
         <button
           aria-label="Add funds"
-          className="grid h-7 w-7 place-items-center rounded-full border-2 border-white text-white"
+          className="grid h-7 w-7 place-items-center rounded-full border-2 border-white text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           type="button"
         >
           <Plus aria-hidden="true" className="h-5 w-5 stroke-[1.8]" />
@@ -94,7 +180,7 @@ function TopBrandBar() {
       </div>
       <button
         aria-label="Open profile"
-        className="grid h-9 w-9 place-items-center rounded-full bg-slate-700 text-white"
+        className="grid h-9 w-9 place-items-center rounded-full bg-slate-700 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         type="button"
       >
         <CircleUserRound aria-hidden="true" className="h-7 w-7 stroke-[1.6]" />
@@ -111,7 +197,7 @@ function CategoryNav() {
           <button
             key={category}
             aria-label={`Show ${category}`}
-            className="min-h-8 shrink-0 text-[1.02rem] font-medium text-violet-950/75"
+            className="min-h-8 shrink-0 rounded-md text-[1.02rem] font-medium text-violet-950/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700"
             type="button"
           >
             {category}
@@ -173,7 +259,7 @@ function BottomNav() {
             <button
               key={item.label}
               aria-label={`Open ${item.label}`}
-              className="flex h-full min-w-0 items-center justify-center text-white"
+              className="flex h-full min-w-0 items-center justify-center rounded-full text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               type="button"
             >
               <span className="flex w-full min-w-0 flex-col items-center justify-center gap-0.5 px-1 text-center">

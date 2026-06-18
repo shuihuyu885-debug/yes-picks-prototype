@@ -34,7 +34,7 @@ export function ScenarioSwitcher({
               key={scenario.id}
               aria-pressed={isActive}
               className={clsx(
-                "min-h-11 rounded-lg border px-3 py-3 text-left text-sm font-semibold transition",
+                "flex min-h-11 items-center justify-between gap-2 rounded-lg border px-3 py-3 text-left text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yes-green",
                 isActive
                   ? "border-yes-green bg-yes-green text-yes-ink"
                   : "border-yes-line bg-yes-ink text-yes-mist hover:border-yes-teal",
@@ -42,7 +42,12 @@ export function ScenarioSwitcher({
               onClick={() => onChange(scenario.id)}
               type="button"
             >
-              {scenarioLabels[scenario.id]}
+              <span>{scenarioLabels[scenario.id]}</span>
+              {isActive ? (
+                <span className="rounded-full bg-yes-ink px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-normal text-yes-green">
+                  Active
+                </span>
+              ) : null}
             </button>
           );
         })}

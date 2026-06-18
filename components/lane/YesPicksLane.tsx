@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { GameCard } from "@/components/cards/GameCard";
 import { HeroTile } from "@/components/cards/HeroTile";
 import {
@@ -44,12 +45,16 @@ export function YesPicksLane({
       <div className="scrollbar-none -mx-5 overflow-x-auto px-[11px] pb-1">
         <div className="grid w-max grid-flow-col grid-rows-[142px_142px] gap-[6px]">
           {hasHero ? (
-            <div
+            <motion.div
+              key={`${scenario.id}-${heroDecision.heroType}`}
+              animate={{ opacity: 1, y: 0 }}
               className={
                 heroDecision.heroType === "jackpot-pool"
                   ? "row-span-2 h-[290px] w-[470px]"
                   : "row-span-2 h-[290px] w-[231px]"
               }
+              initial={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
               <HeroTile
                 game={heroTileGame}
@@ -57,7 +62,7 @@ export function YesPicksLane({
                 onCtaClick={() => onCtaClick(heroDecision.heroType, scenario)}
                 onInfoClick={() => onInfoClick(heroDecision.heroType, scenario)}
               />
-            </div>
+            </motion.div>
           ) : null}
 
           {supportingGames.map((game, index) => (
