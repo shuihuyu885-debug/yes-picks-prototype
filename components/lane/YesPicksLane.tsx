@@ -1,38 +1,115 @@
 "use client";
 
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
-import type { HeroDecision, Scenario } from "@/lib/types";
+import { GameCard } from "@/components/cards/GameCard";
+import { HeroTile } from "@/components/cards/HeroTile";
+import {
+  getHeroGameForScenario,
+  getScenarioById,
+  getSupportingGamesForScenario,
+} from "@/data/ranking";
+import { getHeroDecision } from "@/lib/heroDecision";
+import type { HeroType, RankedGame, Scenario, ScenarioId } from "@/lib/types";
 
 type YesPicksLaneProps = {
-  children: ReactNode;
-  hero: HeroDecision;
-  scenario: Scenario;
+  scenarioId: ScenarioId;
+  onInfoClick: (heroType: HeroType, scenario: Scenario) => void;
+  onCtaClick: (heroType: HeroType, scenario: Scenario) => void;
+  onGameClick: (game: RankedGame) => void;
 };
 
-export function YesPicksLane({ children, hero, scenario }: YesPicksLaneProps) {
+export function YesPicksLane({
+  scenarioId,
+  onInfoClick,
+  onCtaClick,
+  onGameClick,
+}: YesPicksLaneProps) {
+  const scenario = getScenarioById(scenarioId);
+  const heroDecision = getHeroDecision(scenario);
+  const heroGame = getHeroGameForScenario(scenarioId);
+  const supportingGames = getOrderedSupportingGames(scenario, getSupportingGamesForScenario(scenarioId));
+  const heroTileGame = heroDecision.heroType !== "none" ? heroGame : undefined;
+  const hasHero = heroDecision.heroType !== "none";
+
   return (
-    <motion.section
-      key={scenario.key}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-7"
-      initial={{ opacity: 0, y: 12 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
-    >
-      <div className="mb-4 flex items-end justify-between gap-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-[0.14em] text-yes-green">
-            Yes Picks
-          </p>
-          <h3 className="mt-1 text-xl font-semibold tracking-normal text-yes-mist">
-            {hero.kind === "none" ? "Balanced grid" : hero.title}
-          </h3>
-        </div>
-        <span className="rounded-full border border-yes-line px-3 py-1 text-xs text-yes-muted">
-          {scenario.label}
-        </span>
+    <section aria-labelledby="yes-picks-heading" className="space-y-[13px]">
+      <div>
+        <h2
+          id="yes-picks-heading"
+          className="text-[1.28rem] font-medium leading-[1.15] tracking-normal text-[#5d5a88]"
+        >
+          <span className="font-black">Yes</span> Picks
+        </h2>
       </div>
-      <div className="space-y-3">{children}</div>
-    </motion.section>
+
+      <div className="scrollbar-none -mx-5 overflow-x-auto px-[11px] pb-1">
+        <div className="grid w-max grid-flow-col grid-rows-[142px_142px] gap-[6px]">
+          {hasHero ? (
+            <div
+              className={
+                heroDecision.heroType === "jackpot-pool"
+                  ? "row-span-2 h-[290px] w-[470px]"
+                  : "row-span-2 h-[290px] w-[231px]"
+              }
+            >
+              <HeroTile
+                game={heroTileGame}
+                heroDecision={heroDecision}
+                onCtaClick={() => onCtaClick(heroDecision.heroType, scenario)}
+                onInfoClick={() => onInfoClick(heroDecision.heroType, scenario)}
+              />
+            </div>
+          ) : null}
+
+          {supportingGames.map((game, index) => (
+            <GameCard
+              key={game.id}
+              game={game}
+              index={index}
+              scenarioId={scenario.id}
+              onClick={onGameClick}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
+}
+
+function getOrderedSupportingGames(scenario: Scenario, games: RankedGame[]) {
+  if (scenario.id === "jackpot-event-available") {
+    // Jackpot pool support cards surface games from the same pool before filling the lane.
+    return [...games].sort((a, b) => {
+      const aInPool = a.jackpotPoolId === scenario.jackpotPoolId;
+      const bInPool = b.jackpotPoolId === scenario.jackpotPoolId;
+
+      if (aInPool !== bInPool) {
+        return aInPool ? -1 : 1;
+      }
+
+      return b.score - a.score || a.title.localeCompare(b.title);
+    });
+  }
+
+  if (scenario.id === "daily-picks-available") {
+    // Daily Picks stays as a reward hero; supporting cards remain normal eligible games.
+    return [...games].sort((a, b) => {
+      if (a.isRecentlyPlayed !== b.isRecentlyPlayed) {
+        return a.isRecentlyPlayed ? -1 : 1;
+      }
+
+      return b.score - a.score || a.title.localeCompare(b.title);
+    });
+  }
+
+  if (scenario.layoutMode !== "balanced-carousel" || scenario.playerType !== "returning") {
+    return games;
+  }
+
+  return [...games].sort((a, b) => {
+    if (a.isRecentlyPlayed !== b.isRecentlyPlayed) {
+      return a.isRecentlyPlayed ? -1 : 1;
+    }
+
+    return b.score - a.score || a.title.localeCompare(b.title);
+  });
 }

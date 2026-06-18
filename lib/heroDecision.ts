@@ -1,49 +1,63 @@
-import type { HeroDecision, RankedGame, Scenario } from "@/lib/types";
+import { games } from "@/data/games";
+import type { HeroDecision, Scenario } from "@/lib/types";
 
-export function decideHero(scenario: Scenario, rankedGames: RankedGame[]): HeroDecision {
-  if (scenario.heroSignal === "none" || scenario.flags?.suppressHero) {
+export function getHeroDecision(scenario: Scenario): HeroDecision {
+  if (scenario.id === "daily-picks-available") {
+    // Daily Picks hero = reward/promotion state with key conditions visible.
     return {
-      kind: "none",
-      title: "Balanced grid",
-      description: "No hero tile is shown because there is no strong enough state signal.",
-      reason: "No strong player, commercial or event signal is available.",
+      scenarioId: scenario.id,
+      heroType: "daily-picks",
+      layoutMode: "hero-carousel",
+      heroPlacement: "first-carousel-item",
+      decisionReason: "Daily Picks is available, so the reward card becomes the first carousel item.",
+      heroGameId: scenario.heroGameId,
+      heroTitle: getHeroTitle(scenario.heroGameId),
+      heroCopy: scenario.heroCopy,
+      safeCopy: scenario.safeCopy,
     };
   }
 
-  if (scenario.flags?.dailyPicksAvailable) {
+  if (scenario.id === "jackpot-event-available") {
+    // Jackpot hero = jackpot pool discovery, not a single game promotion.
     return {
-      kind: "daily-picks",
-      title: "Daily Picks",
-      description:
-        "Reward or promotion card shown before normal game tiles. It explains availability without implying better winning chances.",
-      ctaLabel: "View Daily Picks",
-      reason: "Daily Picks availability is a strong reward signal.",
+      scenarioId: scenario.id,
+      heroType: "jackpot-pool",
+      layoutMode: "hero-carousel",
+      heroPlacement: "first-carousel-item",
+      decisionReason:
+        "A configured jackpot pool event is active, so the pool tile leads the carousel.",
+      heroGameId: scenario.heroGameId,
+      heroTitle: getHeroTitle(scenario.heroGameId),
+      heroCopy: scenario.heroCopy,
+      jackpotPoolId: scenario.jackpotPoolId,
     };
   }
 
-  if (scenario.flags?.jackpotEventAvailable) {
-    const jackpotGame = rankedGames.find((game) => game.isJackpot);
-
+  if (scenario.id === "new-player") {
+    // Featured hero = content/editorial/business priority.
     return {
-      kind: "jackpot",
-      title: jackpotGame ? `${jackpotGame.title} event` : "Jackpot event",
-      description:
-        "Event-led hero state for an eligible jackpot moment, followed by a compliant content mix.",
-      ctaLabel: "View event",
-      reason: "Configured jackpot event is active.",
-      gameId: jackpotGame?.id,
+      scenarioId: scenario.id,
+      heroType: "featured-game",
+      layoutMode: "hero-carousel",
+      heroPlacement: "first-carousel-item",
+      decisionReason:
+        "A cold-start player signal is strong enough to feature a simple starting point.",
+      heroGameId: scenario.heroGameId,
+      heroTitle: getHeroTitle(scenario.heroGameId),
+      heroCopy: scenario.heroCopy,
     };
   }
-
-  const topGame = rankedGames[0];
 
   return {
-    kind: "game",
-    title: topGame?.title ?? "Yes Picks",
-    description:
-      "Top-ranked game selected from a strong player signal, scenario tags, category mix and conservative stake assumptions.",
-    ctaLabel: "Open game",
-    reason: "Strong player signal allows the highest ranked eligible game to become the hero tile.",
-    gameId: topGame?.id,
+    scenarioId: scenario.id,
+    heroType: "none",
+    layoutMode: "balanced-carousel",
+    heroPlacement: "none",
+    decisionReason:
+      "No strong player, commercial or event signal is present, so the lane becomes a balanced carousel.",
   };
+}
+
+function getHeroTitle(heroGameId: string | undefined) {
+  return games.find((game) => game.id === heroGameId)?.title;
 }

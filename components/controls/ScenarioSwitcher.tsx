@@ -1,12 +1,20 @@
 "use client";
 
 import { clsx } from "clsx";
-import type { Scenario, ScenarioKey } from "@/lib/types";
+import type { Scenario, ScenarioId } from "@/lib/types";
 
 type ScenarioSwitcherProps = {
-  activeScenario: ScenarioKey;
+  activeScenario: ScenarioId;
   scenarios: Scenario[];
-  onChange: (scenario: ScenarioKey) => void;
+  onChange: (scenario: ScenarioId) => void;
+};
+
+const scenarioLabels: Record<ScenarioId, string> = {
+  "new-player": "New Player",
+  "returning-player": "Returning Player",
+  "daily-picks-available": "Daily Picks",
+  "jackpot-event-available": "Jackpot Event",
+  "balanced-carousel": "Balanced Carousel",
 };
 
 export function ScenarioSwitcher({
@@ -19,24 +27,22 @@ export function ScenarioSwitcher({
       <p className="px-1 text-sm font-semibold text-yes-mist">Scenarios</p>
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {scenarios.map((scenario) => {
-          const isActive = scenario.key === activeScenario;
+          const isActive = scenario.id === activeScenario;
 
           return (
             <button
-              key={scenario.key}
+              key={scenario.id}
+              aria-pressed={isActive}
               className={clsx(
-                "min-h-11 rounded-lg border px-3 py-3 text-left text-sm transition",
+                "min-h-11 rounded-lg border px-3 py-3 text-left text-sm font-semibold transition",
                 isActive
                   ? "border-yes-green bg-yes-green text-yes-ink"
                   : "border-yes-line bg-yes-ink text-yes-mist hover:border-yes-teal",
               )}
-              onClick={() => onChange(scenario.key)}
+              onClick={() => onChange(scenario.id)}
               type="button"
             >
-              <span className="block font-semibold">{scenario.label}</span>
-              <span className={clsx("mt-1 block text-xs", isActive ? "text-yes-ink" : "text-yes-muted")}>
-                {scenario.shortLabel}
-              </span>
+              {scenarioLabels[scenario.id]}
             </button>
           );
         })}
