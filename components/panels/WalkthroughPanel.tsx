@@ -18,20 +18,20 @@ export function WalkthroughPanel({ enabled, onToggle }: WalkthroughPanelProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-slate-50 p-2.5">
+    <section className="rounded-lg border border-yes-line bg-yes-panel p-2.5">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-slate-800">
-          Review mode: <span className={enabled ? "text-emerald-700" : "text-slate-500"}>{enabled ? "On" : "Off"}</span>
+        <p className="text-sm font-semibold text-yes-mist">
+          Review mode: <span className={enabled ? "text-yes-green" : "text-yes-muted"}>{enabled ? "On" : "Off"}</span>
         </p>
         <button
           aria-pressed={enabled}
-          className="flex min-h-9 items-center gap-2 rounded-full border border-slate-300 bg-white px-2 py-1 text-xs font-bold text-slate-700 transition hover:border-violet-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700"
+          className="flex min-h-9 items-center gap-2 rounded-full border border-yes-line bg-yes-ink px-2 py-1 text-xs font-bold text-yes-mist transition hover:border-yes-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yes-green"
           onClick={() => onToggle(!enabled)}
           type="button"
         >
           <span
             className={`grid h-6 w-10 place-items-center rounded-full px-1 transition ${
-              enabled ? "bg-emerald-500" : "bg-slate-300"
+              enabled ? "bg-yes-green" : "bg-slate-700"
             }`}
             aria-hidden="true"
           >
@@ -49,17 +49,17 @@ export function WalkthroughPanel({ enabled, onToggle }: WalkthroughPanelProps) {
         <div className="mt-2">
           <button
             aria-expanded={expanded}
-            className="min-h-8 rounded-md px-1 text-xs font-bold text-violet-700 underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700"
+            className="min-h-8 rounded-md px-1 text-xs font-bold text-yes-green underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yes-green"
             onClick={() => setExpanded(!expanded)}
             type="button"
           >
             {expanded ? "Hide steps" : "Show steps"}
           </button>
           {expanded ? (
-            <ol className="mt-2 grid gap-1.5 text-xs text-slate-700 sm:grid-cols-2">
+            <ol className="mt-2 grid gap-1.5 text-xs text-yes-muted sm:grid-cols-2">
               {walkthroughSteps.map((step, index) => (
-                <li key={step} className="flex items-center gap-2 rounded-md bg-white px-2 py-1.5">
-                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-violet-100 text-[0.68rem] font-black text-violet-800">
+                <li key={step} className="flex items-center gap-2 rounded-md bg-yes-ink px-2 py-1.5">
+                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-yes-green text-[0.68rem] font-black text-yes-ink">
                     {index + 1}
                   </span>
                   <span>{step}</span>

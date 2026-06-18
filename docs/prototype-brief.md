@@ -6,13 +6,12 @@ Yes Picks is a dynamic, state-based casino lobby lane. The lane changes its hero
 
 The prototype is designed around an iPhone 16 Pro Max lobby preview: 440px wide by 956px high. Desktop space is reserved for scenario controls and annotation panels.
 
-## Five Scenarios
+## Scenarios
 
 - New Player: uses a featured-game hero tile to reduce first-visit decision friction.
-- Returning Player: removes the hero tile and uses a balanced carousel so resume and discovery signals do not over-dominate the lane.
-- Daily Picks Available: uses a Daily Picks reward/promotion tile as the first carousel item with key conditions visible.
-- Jackpot Event Available: uses a jackpot-pool tile as the first carousel item and groups linked games without urgency or winning claims.
-- Balanced Carousel: removes the hero tile when no strong player, commercial or event signal exists.
+- Returning Player: removes the hero tile and uses a two-row compact carousel so resume and discovery signals do not over-dominate the lane.
+- Daily Picks: uses a Daily Picks reward/promotion tile as the first carousel item with key conditions visible.
+- Jackpot Event: uses a jackpot-pool tile as the first carousel item and groups linked games without urgency or winning claims.
 
 ## Hero Tile Types
 
@@ -27,7 +26,7 @@ Yes Picks is a horizontal mobile carousel, not a static grid.
 
 Hero Carousel mode places one large hero tile as the first item inside the carousel. Compact game cards then follow in a two-row horizontal carousel.
 
-Balanced Carousel mode removes the hero tile. The lane becomes a two-row horizontal carousel of equal-weight compact game cards.
+No Hero mode removes the hero tile. The lane becomes a two-row horizontal carousel of equal-weight compact game cards.
 
 ## Ranking Logic
 

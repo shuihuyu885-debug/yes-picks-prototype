@@ -8,8 +8,7 @@ export type ScenarioId =
   | "new-player"
   | "returning-player"
   | "daily-picks-available"
-  | "jackpot-event-available"
-  | "balanced-carousel";
+  | "jackpot-event-available";
 
 export type HeroType = "featured-game" | "daily-picks" | "jackpot-pool" | "none";
 

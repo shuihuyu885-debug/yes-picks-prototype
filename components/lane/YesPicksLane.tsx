@@ -27,7 +27,10 @@ export function YesPicksLane({
   const scenario = getScenarioById(scenarioId);
   const heroDecision = getHeroDecision(scenario);
   const heroGame = getHeroGameForScenario(scenarioId);
-  const supportingGames = getOrderedSupportingGames(scenario, getSupportingGamesForScenario(scenarioId));
+  const supportingGames = getOrderedSupportingGames(
+    scenario,
+    getSupportingGamesForScenario(scenarioId),
+  ).slice(0, 10);
   const heroTileGame = heroDecision.heroType !== "none" ? heroGame : undefined;
   const hasHero = heroDecision.heroType !== "none";
 

@@ -35,7 +35,7 @@ export const scenarios: Scenario[] = [
     heroType: "daily-picks",
     layoutMode: "hero-carousel",
     heroPlacement: "first-carousel-item",
-    title: "Daily Picks Available",
+    title: "Daily Picks",
     purpose: "Show reward/promotion state with clear key conditions.",
     heroCopy: "6 daily picks available today",
     safeCopy: ["6 daily picks available today", "First deposit required", "Prize cap applies", "Terms apply"],
@@ -51,7 +51,7 @@ export const scenarios: Scenario[] = [
     heroType: "jackpot-pool",
     layoutMode: "hero-carousel",
     heroPlacement: "first-carousel-item",
-    title: "Jackpot Event Available",
+    title: "Jackpot Event",
     purpose: "Group multiple games linked to the same jackpot pool.",
     heroCopy: "Yes Pots linked games",
     annotation:
@@ -60,18 +60,5 @@ export const scenarios: Scenario[] = [
     preferredCategories: ["slot", "live", "table", "instant"],
     heroGameId: "yes-pots",
     jackpotPoolId: "yes-pots",
-  },
-  {
-    id: "balanced-carousel",
-    playerType: "returning",
-    heroType: "none",
-    layoutMode: "balanced-carousel",
-    heroPlacement: "none",
-    title: "Balanced Carousel",
-    purpose: "Fallback state when no strong hero signal exists.",
-    annotation:
-      "The hero tile only appears when there is a strong player, commercial or event signal.",
-    preferredTags: ["popular", "classic", "quick"],
-    preferredCategories: ["slot", "live", "table", "instant"],
   },
 ];
