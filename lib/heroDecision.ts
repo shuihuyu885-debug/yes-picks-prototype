@@ -3,6 +3,7 @@ import type { HeroDecision, Scenario } from "@/lib/types";
 
 export function getHeroDecision(scenario: Scenario): HeroDecision {
   if (scenario.id === "daily-picks-available") {
+    // Daily Picks hero = reward/promotion state with key conditions visible.
     return {
       scenarioId: scenario.id,
       heroType: "daily-picks",
@@ -17,6 +18,7 @@ export function getHeroDecision(scenario: Scenario): HeroDecision {
   }
 
   if (scenario.id === "jackpot-event-available") {
+    // Jackpot hero = jackpot pool discovery, not a single game promotion.
     return {
       scenarioId: scenario.id,
       heroType: "jackpot-pool",
@@ -32,6 +34,7 @@ export function getHeroDecision(scenario: Scenario): HeroDecision {
   }
 
   if (scenario.id === "new-player") {
+    // Featured hero = content/editorial/business priority.
     return {
       scenarioId: scenario.id,
       heroType: "featured-game",

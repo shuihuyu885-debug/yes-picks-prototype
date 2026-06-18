@@ -11,6 +11,7 @@ import {
   WalletCards,
 } from "lucide-react";
 import { YesPicksLane } from "@/components/lane/YesPicksLane";
+import type { HeroType, RankedGame, Scenario } from "@/lib/types";
 
 const categories = ["Slots", "Jackpots", "Table Games", "Slingo", "Bingo", "Live Casino"];
 
@@ -23,9 +24,17 @@ const bottomNav = [
 ];
 
 export function MobileLobby() {
-  const handleInfoClick = () => undefined;
-  const handleCtaClick = () => undefined;
-  const handleGameClick = () => undefined;
+  const handleInfoClick = (heroType: HeroType, scenario: Scenario) => {
+    console.log("Yes Picks hero info", { heroType, scenarioId: scenario.id });
+  };
+
+  const handleCtaClick = (heroType: HeroType, scenario: Scenario) => {
+    console.log("Yes Picks hero CTA", { heroType, scenarioId: scenario.id });
+  };
+
+  const handleGameClick = (game: RankedGame) => {
+    console.log("Yes Picks game", { gameId: game.id, title: game.title });
+  };
 
   return (
     <div className="relative h-full overflow-hidden bg-slate-50 text-slate-950">

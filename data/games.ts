@@ -61,7 +61,7 @@ export const games: Game[] = [
   },
   {
     id: "fire-blitz-hot-stepper",
-    title: "Fire Blitz Hot Stepper",
+    title: "Fire Blitz Stepper",
     category: "slot",
     provider: "Illustrative Slots Co.",
     marketEligibility: ["DK"],
