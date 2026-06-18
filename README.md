@@ -34,7 +34,6 @@ npm run build
 - Returning Player
 - Daily Picks Available
 - Jackpot Event Available
-- Balanced Carousel / No Hero State
 
 ## Intended submission format
 
@@ -51,4 +50,3 @@ Submit a Vercel prototype link that opens directly into the clickable Yes Picks 
 - Responsible-gambling guardrails remain visible.
 - Hero treatment is reserved for strong player, commercial or event signals.
 - Yes Picks is modelled as a horizontal mobile carousel, not a static grid.
-- If no signal is strong enough, the lane collapses into a balanced two-row carousel.

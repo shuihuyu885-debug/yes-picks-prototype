@@ -42,13 +42,13 @@ export function ReviewTabs({ hero, rankedGames, scenario }: ReviewTabsProps) {
   const copy = scenarioReviewCopy[scenario.id];
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+    <section className="rounded-lg border border-yes-line bg-yes-panel p-3">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Details</p>
-          <h2 className="mt-0.5 text-base font-bold text-slate-950">Review notes</h2>
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-yes-muted">Details</p>
+          <h2 className="mt-0.5 text-base font-bold text-yes-mist">Review notes</h2>
         </div>
-        <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+        <span className="rounded-full bg-yes-ink px-2 py-1 text-xs font-semibold text-yes-muted">
           {scenario.title}
         </span>
       </div>
@@ -67,10 +67,10 @@ export function ReviewTabs({ hero, rankedGames, scenario }: ReviewTabsProps) {
               aria-controls={`review-tabpanel-${tab.id}`}
               aria-selected={isActive}
               className={clsx(
-                "min-h-9 rounded-md border px-2 py-1.5 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700",
+                "min-h-9 rounded-md border px-2 py-1.5 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yes-green",
                 isActive
-                  ? "border-slate-950 bg-slate-950 text-white"
-                  : "border-slate-200 bg-slate-50 text-slate-700 hover:border-violet-300",
+                  ? "border-yes-green bg-yes-green text-yes-ink"
+                  : "border-yes-line bg-yes-ink text-yes-mist hover:border-yes-teal",
               )}
               id={`review-tab-${tab.id}`}
               onClick={() => setActiveTab(tab.id)}
@@ -85,7 +85,7 @@ export function ReviewTabs({ hero, rankedGames, scenario }: ReviewTabsProps) {
 
       <div
         aria-labelledby={`review-tab-${activeTab}`}
-        className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3"
+        className="mt-3 rounded-lg border border-yes-line bg-yes-ink p-3"
         id={`review-tabpanel-${activeTab}`}
         role="tabpanel"
       >
@@ -118,22 +118,22 @@ function ScenarioLogic({
         <DetailRow label="Mode" value={`${formatLayoutMode(hero.layoutMode)} · ${formatHeroType(hero.heroType)}`} />
       </dl>
 
-      <div className="rounded-md border border-slate-200 bg-white p-2.5">
-        <p className="text-xs font-bold uppercase tracking-[0.1em] text-slate-500">
+      <div className="rounded-md border border-yes-line bg-yes-panel p-2.5">
+        <p className="text-xs font-bold uppercase tracking-[0.1em] text-yes-muted">
           Ranked preview
         </p>
         <ol className="mt-2 space-y-1.5">
           {rankedGames.slice(0, 4).map((game, index) => (
             <li key={game.id} className="flex items-start justify-between gap-2 text-xs">
               <div className="min-w-0">
-                <p className="truncate font-bold text-slate-900">
+                <p className="truncate font-bold text-yes-mist">
                   {index + 1}. {game.title}
                 </p>
-                <p className="mt-0.5 line-clamp-2 leading-4 text-slate-500">
+                <p className="mt-0.5 line-clamp-2 leading-4 text-yes-muted">
                   {game.reasons.slice(0, 2).join(" · ")}
                 </p>
               </div>
-              <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-emerald-800">
+              <span className="rounded-full bg-yes-green/15 px-2 py-0.5 font-bold text-yes-green">
                 {game.score}
               </span>
             </li>
@@ -152,30 +152,30 @@ function RankingConfig() {
   return (
     <div className="grid gap-3 lg:grid-cols-2">
       <div>
-        <h3 className="text-sm font-bold text-slate-950">Ranking weights</h3>
+        <h3 className="text-sm font-bold text-yes-mist">Ranking weights</h3>
         <div className="mt-2 space-y-1.5">
           {weights.map(([factor, weight]) => (
             <div key={factor} className="flex items-center justify-between gap-3 text-sm">
-              <span className="text-slate-600">{rankingFactorLabels[factor]}</span>
-              <span className="font-mono text-xs font-bold text-slate-950">{weight}</span>
+              <span className="text-yes-muted">{rankingFactorLabels[factor]}</span>
+              <span className="font-mono text-xs font-bold text-yes-mist">{weight}</span>
             </div>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="text-sm font-bold text-slate-950">Hard filters</h3>
+        <h3 className="text-sm font-bold text-yes-mist">Hard filters</h3>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {hardFilterLabels.map((filter) => (
             <span
               key={filter}
-              className="rounded-full border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-700"
+              className="rounded-full border border-yes-line bg-yes-panel px-2 py-1 text-xs font-semibold text-yes-muted"
             >
               {filter}
             </span>
           ))}
         </div>
-        <p className="mt-3 text-sm leading-5 text-slate-600">{denmarkRankingConfig.note}</p>
+        <p className="mt-3 text-sm leading-5 text-yes-muted">{denmarkRankingConfig.note}</p>
       </div>
     </div>
   );
@@ -185,20 +185,20 @@ function Compliance({ copy }: { copy: ReviewCopy }) {
   return (
     <div className="grid gap-3 lg:grid-cols-[1fr_0.8fr]">
       <div>
-        <h3 className="text-sm font-bold text-slate-950">Scenario note</h3>
-        <p className="mt-2 text-sm leading-5 text-slate-600">{copy.complianceNote}</p>
-        <p className="mt-2 text-sm leading-5 text-slate-600">
+        <h3 className="text-sm font-bold text-yes-mist">Scenario note</h3>
+        <p className="mt-2 text-sm leading-5 text-yes-muted">{copy.complianceNote}</p>
+        <p className="mt-2 text-sm leading-5 text-yes-muted">
           Commercial priority cannot override eligibility, mobile readiness, DKK support or
           responsible-gambling guardrails.
         </p>
       </div>
       <div>
-        <h3 className="text-sm font-bold text-slate-950">Guardrails</h3>
+        <h3 className="text-sm font-bold text-yes-mist">Guardrails</h3>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {guardrailLabels.map((guardrail) => (
             <span
               key={guardrail}
-              className="rounded-full bg-violet-100 px-2 py-1 text-xs font-semibold text-violet-800"
+              className="rounded-full bg-yes-teal/15 px-2 py-1 text-xs font-semibold text-yes-teal"
             >
               {guardrail}
             </span>
@@ -211,10 +211,10 @@ function Compliance({ copy }: { copy: ReviewCopy }) {
 
 function Assumptions() {
   return (
-    <ul className="grid gap-2 text-sm leading-5 text-slate-600">
+    <ul className="grid gap-2 text-sm leading-5 text-yes-muted">
       {assumptions.map((assumption) => (
         <li key={assumption} className="flex gap-2">
-          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-700" aria-hidden="true" />
+          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-yes-green" aria-hidden="true" />
           <span>{assumption}</span>
         </li>
       ))}
@@ -225,8 +225,8 @@ function Assumptions() {
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs font-bold uppercase tracking-[0.08em] text-slate-500">{label}</dt>
-      <dd className="mt-1 leading-5 text-slate-700">{value}</dd>
+      <dt className="text-xs font-bold uppercase tracking-[0.08em] text-yes-muted">{label}</dt>
+      <dd className="mt-1 leading-5 text-yes-mist">{value}</dd>
     </div>
   );
 }

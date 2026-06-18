@@ -48,15 +48,6 @@ export const scenarioReviewCopy: Record<ScenarioId, ReviewCopy> = {
     complianceNote:
       "The tile avoids urgency, due-to-drop language and claims about likelihood of winning.",
   },
-  "balanced-carousel": {
-    playerState: "Returning player with no strong signal",
-    whyLane: "No player, commercial or event signal is strong enough to justify a hero tile.",
-    carouselChanges: "Balanced two-row carousel of equal-weight compact cards.",
-    rankingLogic:
-      "The lane maximises variety by balancing popularity, category mix, freshness and session fit.",
-    complianceNote:
-      "Removing the hero avoids unnecessary content dominance and keeps recommendations neutral.",
-  },
 };
 
 export const hardFilterLabels = [
@@ -97,7 +88,7 @@ export function formatHeroType(heroType: HeroType) {
 export function formatLayoutMode(layoutMode: LayoutMode) {
   const labels: Record<LayoutMode, string> = {
     "hero-carousel": "Hero Carousel",
-    "balanced-carousel": "Balanced Carousel",
+    "balanced-carousel": "No Hero Carousel",
   };
 
   return labels[layoutMode];

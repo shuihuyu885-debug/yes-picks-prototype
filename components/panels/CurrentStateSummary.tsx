@@ -14,12 +14,12 @@ export function CurrentStateSummary({ hero, scenario }: CurrentStateSummaryProps
   const copy = scenarioReviewCopy[scenario.id];
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+    <section className="rounded-lg border border-yes-line bg-yes-panel p-3">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-yes-muted">
           Current state
         </p>
-        <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-bold text-violet-800">
+        <span className="rounded-full bg-yes-teal/15 px-2 py-0.5 text-xs font-bold text-yes-teal">
           {formatLayoutMode(hero.layoutMode)}
         </span>
       </div>
@@ -30,8 +30,8 @@ export function CurrentStateSummary({ hero, scenario }: CurrentStateSummaryProps
         <SummaryRow label="Carousel mode" value={formatLayoutMode(hero.layoutMode)} />
         <SummaryRow label="Hero type" value={formatHeroType(hero.heroType)} />
         <div className="sm:col-span-2">
-          <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Why</dt>
-          <dd className="mt-1 leading-5 text-slate-700">{copy.whyLane}</dd>
+          <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-yes-muted">Why</dt>
+          <dd className="mt-1 leading-5 text-yes-muted">{copy.whyLane}</dd>
         </div>
       </dl>
     </section>
@@ -41,8 +41,8 @@ export function CurrentStateSummary({ hero, scenario }: CurrentStateSummaryProps
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</dt>
-      <dd className="mt-1 font-semibold leading-5 text-slate-900">{value}</dd>
+      <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-yes-muted">{label}</dt>
+      <dd className="mt-1 font-semibold leading-5 text-yes-mist">{value}</dd>
     </div>
   );
 }

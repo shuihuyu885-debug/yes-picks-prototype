@@ -17,7 +17,7 @@ export function PrototypeShell({ phonePreview, sidePanel }: PrototypeShellProps)
         </section>
         <aside
           aria-label="Scenario controls and annotations"
-          className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm xl:sticky xl:top-6 xl:max-h-[calc(100dvh-3rem)] xl:overflow-y-auto"
+          className="rounded-lg border border-yes-line bg-yes-ink p-4 shadow-sm xl:sticky xl:top-6 xl:max-h-[calc(100dvh-3rem)] xl:overflow-y-auto"
         >
           {sidePanel}
         </aside>

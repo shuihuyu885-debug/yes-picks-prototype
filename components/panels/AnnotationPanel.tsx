@@ -31,7 +31,7 @@ const scenarioCopy: Record<ScenarioId, AnnotationCopy> = {
     whyLane:
       "Recently played and similarity signals guide ordering, but no next-best-action is strong enough to dominate.",
     carouselChanges:
-      "Balanced Carousel. The hero tile is removed and recently played games appear first.",
+      "No Hero Carousel. The hero tile is removed and recently played games appear first.",
     rankingLogic:
       "Recently played, similar categories and live availability lift familiar games while preserving category variety.",
     complianceNote:
@@ -58,17 +58,6 @@ const scenarioCopy: Record<ScenarioId, AnnotationCopy> = {
       "Same-pool games are prioritised first, then the lane fills with eligible games using the normal ranking mix.",
     complianceNote:
       "The tile avoids urgency, due-to-drop language and claims about likelihood of winning.",
-  },
-  "balanced-carousel": {
-    playerState: "Returning player with no strong player, commercial or event signal.",
-    whyLane:
-      "This is the fallback state when no signal is strong enough to justify a hero tile.",
-    carouselChanges:
-      "Balanced Carousel. Equal-weight compact cards create a two-row horizontal carousel.",
-    rankingLogic:
-      "The lane maximises variety by balancing popularity, category mix, freshness and session fit.",
-    complianceNote:
-      "Removing the hero avoids unnecessary content dominance and keeps recommendations neutral.",
   },
 };
 

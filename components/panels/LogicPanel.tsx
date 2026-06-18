@@ -26,7 +26,7 @@ export function LogicPanel({ hero, rankedGames, scenario }: LogicPanelProps) {
           <div>
             <dt className="font-medium text-yes-mist">Hero state</dt>
             <dd className="mt-1 text-yes-muted">
-              {hero.heroType === "none" ? "No hero. Show balanced carousel." : hero.decisionReason}
+              {hero.heroType === "none" ? "No hero. Show a two-row compact carousel." : hero.decisionReason}
             </dd>
           </div>
           <div>

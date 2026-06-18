@@ -33,13 +33,13 @@ export default function Home() {
         <div className="space-y-3">
           <div className="space-y-3">
             <div>
-              <h1 className="text-2xl font-black tracking-normal text-slate-950">
+              <h1 className="text-2xl font-black tracking-normal text-yes-mist">
                 Yes Picks Prototype
               </h1>
-              <p className="mt-1 text-sm font-semibold text-violet-700">
+              <p className="mt-1 text-sm font-semibold text-yes-green">
                 Dynamic state-based casino carousel
               </p>
-              <p className="mt-1 text-sm leading-5 text-slate-600">
+              <p className="mt-1 text-sm leading-5 text-yes-muted">
                 The phone preview shows how the Yes Picks carousel changes by player state and
                 event signal.
               </p>

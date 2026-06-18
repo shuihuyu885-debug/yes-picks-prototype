@@ -54,7 +54,7 @@ export function getHeroDecision(scenario: Scenario): HeroDecision {
     layoutMode: "balanced-carousel",
     heroPlacement: "none",
     decisionReason:
-      "No strong player, commercial or event signal is present, so the lane becomes a balanced carousel.",
+      "No strong player, commercial or event signal is present, so the lane becomes a no-hero compact carousel.",
   };
 }
 
