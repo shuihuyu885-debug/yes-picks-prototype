@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CircleUserRound,
   Gift,
@@ -8,6 +10,7 @@ import {
   Trophy,
   WalletCards,
 } from "lucide-react";
+import { YesPicksLane } from "@/components/lane/YesPicksLane";
 
 const categories = ["Slots", "Jackpots", "Table Games", "Slingo", "Bingo", "Live Casino"];
 
@@ -20,6 +23,10 @@ const bottomNav = [
 ];
 
 export function MobileLobby() {
+  const handleInfoClick = () => undefined;
+  const handleCtaClick = () => undefined;
+  const handleGameClick = () => undefined;
+
   return (
     <div className="relative h-full overflow-hidden bg-slate-50 text-slate-950">
       <div className="h-full overflow-y-auto pb-28">
@@ -28,7 +35,12 @@ export function MobileLobby() {
         <CategoryNav />
         <main className="space-y-5 px-4 pt-4">
           <HeroPlaceholder />
-          <YesPicksPlaceholder />
+          <YesPicksLane
+            onCtaClick={handleCtaClick}
+            onGameClick={handleGameClick}
+            onInfoClick={handleInfoClick}
+            scenarioId="new-player"
+          />
           <GenericSectionPlaceholder />
         </main>
       </div>
@@ -114,34 +126,6 @@ function HeroPlaceholder() {
         <p className="mt-2 max-w-64 text-sm leading-6 text-slate-700">
           Reserved for a generic lobby message. No real casino imagery in this shell.
         </p>
-      </div>
-    </section>
-  );
-}
-
-function YesPicksPlaceholder() {
-  return (
-    <section aria-labelledby="yes-picks-placeholder" className="space-y-3">
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-violet-700">
-            Dynamic lane
-          </p>
-          <h2 id="yes-picks-placeholder" className="text-xl font-bold tracking-normal">
-            Yes Picks
-          </h2>
-        </div>
-        <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
-          placeholder
-        </span>
-      </div>
-      <div className="rounded-2xl border border-dashed border-violet-300 bg-violet-50 p-4">
-        <div className="flex min-h-36 items-center justify-center rounded-xl border border-violet-200 bg-white/70 px-6 text-center">
-          <p className="text-sm font-medium leading-6 text-slate-700">
-            Yes Picks carousel will be implemented in the next step. This area marks the
-            intended lane position below the top banner.
-          </p>
-        </div>
       </div>
     </section>
   );
