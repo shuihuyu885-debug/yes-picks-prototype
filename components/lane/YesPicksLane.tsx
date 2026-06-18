@@ -31,25 +31,20 @@ export function YesPicksLane({
   const hasHero = heroDecision.heroType !== "none";
 
   return (
-    <section aria-labelledby="yes-picks-heading" className="space-y-3">
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-violet-700">
-            Dynamic lane
-          </p>
-          <h2 id="yes-picks-heading" className="text-xl font-bold tracking-normal text-slate-950">
-            Yes Picks
-          </h2>
-        </div>
-        <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
-          {heroDecision.layoutMode === "hero-carousel" ? "Hero carousel" : "Balanced"}
-        </span>
+    <section aria-labelledby="yes-picks-heading" className="space-y-[13px]">
+      <div>
+        <h2
+          id="yes-picks-heading"
+          className="text-[1.28rem] font-medium leading-[1.15] tracking-normal text-[#5d5a88]"
+        >
+          <span className="font-black">Yes</span> Picks
+        </h2>
       </div>
 
-      <div className="-mx-4 overflow-x-auto px-4 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="grid w-max grid-flow-col grid-rows-[104px_104px] gap-2.5">
+      <div className="scrollbar-none -mx-5 overflow-x-auto px-[11px] pb-1">
+        <div className="grid w-max grid-flow-col grid-rows-[142px_142px] gap-[6px]">
           {hasHero ? (
-            <div className="row-span-2 h-[220px] w-[204px]">
+            <div className="row-span-2 h-[290px] w-[231px]">
               <HeroTile
                 game={heroTileGame}
                 heroDecision={heroDecision}
@@ -59,8 +54,8 @@ export function YesPicksLane({
             </div>
           ) : null}
 
-          {supportingGames.map((game) => (
-            <GameCard key={game.id} game={game} onClick={onGameClick} />
+          {supportingGames.map((game, index) => (
+            <GameCard key={game.id} game={game} index={index} onClick={onGameClick} />
           ))}
         </div>
       </div>
