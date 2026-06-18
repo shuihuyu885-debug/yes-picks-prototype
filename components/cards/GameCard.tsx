@@ -44,7 +44,7 @@ export function GameCard({ game, index = 0, scenarioId, onClick }: GameCardProps
 }
 
 function getGameBadge(game: RankedGame, index: number, scenarioId?: ScenarioId) {
-  if (scenarioId === "jackpot-event-available") {
+  if (usesTieredWireframeCards(scenarioId)) {
     return [0, 4, 6, 8].includes(index) ? "yes Exclusive" : undefined;
   }
 
@@ -56,8 +56,8 @@ function getGameBadge(game: RankedGame, index: number, scenarioId?: ScenarioId) 
 }
 
 function getWireframeTitle(game: RankedGame, index: number, scenarioId?: ScenarioId) {
-  if (scenarioId === "jackpot-event-available") {
-    const jackpotLabels = [
+  if (usesTieredWireframeCards(scenarioId)) {
+    const tieredLabels = [
       "Exclusive Tier 1 Game",
       "Top Local-Market Games",
       "Top Global Game",
@@ -70,7 +70,7 @@ function getWireframeTitle(game: RankedGame, index: number, scenarioId?: Scenari
       "Tier 2 Game",
     ];
 
-    return jackpotLabels[index] ?? "Tier 2 Game";
+    return tieredLabels[index] ?? "Tier 2 Game";
   }
 
   if (game.isExclusive || index === 0) {
@@ -97,8 +97,8 @@ function getWireframeTitle(game: RankedGame, index: number, scenarioId?: Scenari
 }
 
 function getPrizeLabel(game: RankedGame, index: number, scenarioId?: ScenarioId) {
-  if (scenarioId === "jackpot-event-available") {
-    return [0, 1, 5, 7].includes(index) ? "DKK 2,434.32" : undefined;
+  if (usesTieredWireframeCards(scenarioId)) {
+    return [0, 1, 5, 7, 8].includes(index) ? "DKK 2,434.32" : undefined;
   }
 
   if (game.mockPrizeLabel || game.isJackpotLinked || game.isExclusive) {
@@ -106,4 +106,8 @@ function getPrizeLabel(game: RankedGame, index: number, scenarioId?: ScenarioId)
   }
 
   return undefined;
+}
+
+function usesTieredWireframeCards(scenarioId?: ScenarioId) {
+  return scenarioId === "new-player" || scenarioId === "jackpot-event-available";
 }
