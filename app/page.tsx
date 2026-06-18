@@ -5,7 +5,9 @@ import { ScenarioSwitcher } from "@/components/controls/ScenarioSwitcher";
 import { PrototypeShell } from "@/components/layout/PrototypeShell";
 import { MobileLobby } from "@/components/lobby/MobileLobby";
 import { PhoneFrame } from "@/components/lobby/PhoneFrame";
-import { LogicPanel } from "@/components/panels/LogicPanel";
+import { AnnotationPanel } from "@/components/panels/AnnotationPanel";
+import { ConfigPanel } from "@/components/panels/ConfigPanel";
+import { HypothesisCard } from "@/components/panels/HypothesisCard";
 import { getGamesForScenario, getScenarioById } from "@/data/ranking";
 import { scenarios } from "@/data/scenarios";
 import { getHeroDecision } from "@/lib/heroDecision";
@@ -45,7 +47,9 @@ export default function Home() {
             scenarios={scenarios}
           />
 
-          <LogicPanel hero={hero} rankedGames={rankedGames} scenario={scenario} />
+          <AnnotationPanel hero={hero} rankedGames={rankedGames} scenario={scenario} />
+          <ConfigPanel hero={hero} scenario={scenario} />
+          <HypothesisCard />
         </div>
       }
     />

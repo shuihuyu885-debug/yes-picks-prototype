@@ -16,7 +16,7 @@ export function PrototypeShell({ phonePreview, sidePanel }: PrototypeShellProps)
           {phonePreview}
         </section>
         <aside
-          aria-label="Scenario controls and annotations placeholder"
+          aria-label="Scenario controls and annotations"
           className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
         >
           {sidePanel}

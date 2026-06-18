@@ -9,6 +9,14 @@ type ScenarioSwitcherProps = {
   onChange: (scenario: ScenarioId) => void;
 };
 
+const scenarioLabels: Record<ScenarioId, string> = {
+  "new-player": "New Player",
+  "returning-player": "Returning Player",
+  "daily-picks-available": "Daily Picks",
+  "jackpot-event-available": "Jackpot Event",
+  "balanced-carousel": "Balanced Carousel",
+};
+
 export function ScenarioSwitcher({
   activeScenario,
   scenarios,
@@ -24,8 +32,9 @@ export function ScenarioSwitcher({
           return (
             <button
               key={scenario.id}
+              aria-pressed={isActive}
               className={clsx(
-                "min-h-11 rounded-lg border px-3 py-3 text-left text-sm transition",
+                "min-h-11 rounded-lg border px-3 py-3 text-left text-sm font-semibold transition",
                 isActive
                   ? "border-yes-green bg-yes-green text-yes-ink"
                   : "border-yes-line bg-yes-ink text-yes-mist hover:border-yes-teal",
@@ -33,10 +42,7 @@ export function ScenarioSwitcher({
               onClick={() => onChange(scenario.id)}
               type="button"
             >
-              <span className="block font-semibold">{scenario.title}</span>
-              <span className={clsx("mt-1 block text-xs", isActive ? "text-yes-ink" : "text-yes-muted")}>
-                {scenario.layoutMode}
-              </span>
+              {scenarioLabels[scenario.id]}
             </button>
           );
         })}
