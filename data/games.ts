@@ -23,7 +23,7 @@ export const games: Game[] = [
   },
   {
     id: "big-bass-north",
-    title: "Big Bass North",
+    title: "Big Bass Splash",
     category: "slot",
     provider: "Illustrative Slots Co.",
     marketEligibility: ["DK"],
