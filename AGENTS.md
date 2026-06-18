@@ -13,5 +13,7 @@
   - use DKK for Denmark-facing examples.
 - Daily Picks should be treated as a reward/promotion card, not a normal game tile.
 - The hero tile should only appear when there is a strong player, commercial or event signal.
-- If no signal is strong enough, the lane should collapse into a balanced grid.
+- Yes Picks is a horizontal mobile carousel, not a static grid.
+- The hero tile, when present, should be the first carousel item.
+- If no signal is strong enough, the lane should collapse into a balanced two-row carousel.
 - Run `npm run build`, or the closest equivalent validation command, before completing each major implementation step.

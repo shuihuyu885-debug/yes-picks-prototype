@@ -9,31 +9,45 @@ import { LogicPanel } from "@/components/panels/LogicPanel";
 import { LobbyHeader } from "@/components/lobby/LobbyHeader";
 import { PhoneShell } from "@/components/layout/PhoneShell";
 import { YesPicksLane } from "@/components/lane/YesPicksLane";
-import { games } from "@/data/games";
-import { rankGames } from "@/data/ranking";
+import {
+  getGamesForScenario,
+  getHeroGameForScenario,
+  getScenarioById,
+  getSupportingGamesForScenario,
+} from "@/data/ranking";
 import { scenarios } from "@/data/scenarios";
-import { decideHero } from "@/lib/heroDecision";
-import type { ScenarioKey } from "@/lib/types";
+import { getHeroDecision } from "@/lib/heroDecision";
+import type { ScenarioId } from "@/lib/types";
 
 export default function Home() {
-  const [scenarioKey, setScenarioKey] = useState<ScenarioKey>("new-player");
-  const scenario = scenarios.find((item) => item.key === scenarioKey) ?? scenarios[0];
+  const [scenarioId, setScenarioId] = useState<ScenarioId>("new-player");
+  const scenario = useMemo(() => getScenarioById(scenarioId), [scenarioId]);
 
-  const rankedGames = useMemo(() => rankGames(games, scenario), [scenario]);
-  const hero = useMemo(() => decideHero(scenario, rankedGames), [scenario, rankedGames]);
+  const laneGames = useMemo(() => getGamesForScenario(scenarioId), [scenarioId]);
+  const supportingGames = useMemo(() => getSupportingGamesForScenario(scenarioId), [scenarioId]);
+  const heroGame = useMemo(() => getHeroGameForScenario(scenarioId), [scenarioId]);
+  const hero = useMemo(() => getHeroDecision(scenario), [scenario]);
 
   return (
     <main className="min-h-dvh px-4 py-6 text-yes-mist sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[25rem_1fr] lg:items-start">
-        <section aria-label="iPhone-sized lobby preview" className="mx-auto w-full max-w-[25rem]">
+      <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[440px_1fr] lg:items-start">
+        <section aria-label="iPhone 16 Pro Max lobby preview" className="mx-auto w-full max-w-[440px]">
           <PhoneShell>
             <LobbyHeader />
             <YesPicksLane hero={hero} scenario={scenario}>
-              {hero.kind !== "none" ? <RewardTile hero={hero} /> : null}
-              <div className="grid grid-cols-2 gap-3">
-                {rankedGames.slice(0, 6).map((game, index) => (
-                  <GameTile key={game.id} game={game} rank={index + 1} />
-                ))}
+              <div className="overflow-x-auto pb-2">
+                <div className="grid grid-flow-col grid-rows-2 gap-3">
+                  {hero.heroType !== "none" ? (
+                    <div className="row-span-2 w-72">
+                      <RewardTile hero={hero} heroGame={heroGame} />
+                    </div>
+                  ) : null}
+                  {supportingGames.slice(0, 8).map((game, index) => (
+                    <div key={game.id} className="w-40">
+                      <GameTile game={game} rank={index + 1} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </YesPicksLane>
             <div className="mt-5 rounded-lg border border-yes-line bg-yes-panel/70 p-3">
@@ -57,17 +71,17 @@ export default function Home() {
               Configurable casino lobby lane
             </h1>
             <p className="mt-3 max-w-2xl text-base leading-7 text-yes-muted">
-              A clean foundation for showing how Yes Picks can change its hero tile,
+              A data-model foundation for showing how Yes Picks changes its first carousel item,
               ordering and content mix across player, event and business states.
             </p>
           </div>
 
           <ScenarioSwitcher
-            activeScenario={scenarioKey}
+            activeScenario={scenarioId}
             scenarios={scenarios}
-            onChange={setScenarioKey}
+            onChange={setScenarioId}
           />
-          <LogicPanel hero={hero} rankedGames={rankedGames} scenario={scenario} />
+          <LogicPanel hero={hero} rankedGames={laneGames} scenario={scenario} />
         </section>
       </div>
     </main>

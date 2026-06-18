@@ -11,21 +11,27 @@ export function LogicPanel({ hero, rankedGames, scenario }: LogicPanelProps) {
     <div className="grid gap-4 xl:grid-cols-2">
       <section className="rounded-lg border border-yes-line bg-yes-panel p-4">
         <h2 className="text-base font-semibold text-yes-mist">Scenario logic</h2>
-        <p className="mt-2 text-sm leading-6 text-yes-muted">{scenario.description}</p>
+        <p className="mt-2 text-sm leading-6 text-yes-muted">{scenario.purpose}</p>
         <dl className="mt-4 space-y-3 text-sm">
           <div>
             <dt className="font-medium text-yes-mist">Player state</dt>
-            <dd className="mt-1 text-yes-muted">{scenario.playerState}</dd>
+            <dd className="mt-1 text-yes-muted">{scenario.playerType}</dd>
           </div>
           <div>
-            <dt className="font-medium text-yes-mist">Business strategy</dt>
-            <dd className="mt-1 text-yes-muted">{scenario.strategy}</dd>
+            <dt className="font-medium text-yes-mist">Carousel layout</dt>
+            <dd className="mt-1 text-yes-muted">
+              {scenario.layoutMode} / {scenario.heroPlacement}
+            </dd>
           </div>
           <div>
             <dt className="font-medium text-yes-mist">Hero state</dt>
             <dd className="mt-1 text-yes-muted">
-              {hero.kind === "none" ? "No hero. Show balanced grid." : hero.reason}
+              {hero.heroType === "none" ? "No hero. Show balanced carousel." : hero.decisionReason}
             </dd>
+          </div>
+          <div>
+            <dt className="font-medium text-yes-mist">Annotation</dt>
+            <dd className="mt-1 text-yes-muted">{scenario.annotation}</dd>
           </div>
         </dl>
       </section>

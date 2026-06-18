@@ -13,7 +13,7 @@ type YesPicksLaneProps = {
 export function YesPicksLane({ children, hero, scenario }: YesPicksLaneProps) {
   return (
     <motion.section
-      key={scenario.key}
+      key={scenario.id}
       animate={{ opacity: 1, y: 0 }}
       className="mt-7"
       initial={{ opacity: 0, y: 12 }}
@@ -25,11 +25,11 @@ export function YesPicksLane({ children, hero, scenario }: YesPicksLaneProps) {
             Yes Picks
           </p>
           <h3 className="mt-1 text-xl font-semibold tracking-normal text-yes-mist">
-            {hero.kind === "none" ? "Balanced grid" : hero.title}
+            {hero.heroType === "none" ? "Balanced carousel" : hero.heroTitle ?? scenario.title}
           </h3>
         </div>
         <span className="rounded-full border border-yes-line px-3 py-1 text-xs text-yes-muted">
-          {scenario.label}
+          {scenario.title}
         </span>
       </div>
       <div className="space-y-3">{children}</div>

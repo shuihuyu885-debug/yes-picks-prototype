@@ -1,6 +1,5 @@
 import { CircleDollarSign } from "lucide-react";
 import type { RankedGame } from "@/lib/types";
-import { formatDkk } from "@/lib/format";
 
 type GameTileProps = {
   game: RankedGame;
@@ -9,7 +8,7 @@ type GameTileProps = {
 
 export function GameTile({ game, rank }: GameTileProps) {
   return (
-    <article className="min-h-40 rounded-lg border border-yes-line bg-yes-panel p-3">
+    <article className="min-h-36 rounded-lg border border-yes-line bg-yes-panel p-3">
       <div className="flex items-start justify-between gap-2">
         <span className="rounded-full bg-yes-ink px-2 py-1 text-[0.68rem] font-medium uppercase text-yes-muted">
           #{rank}
@@ -22,7 +21,7 @@ export function GameTile({ game, rank }: GameTileProps) {
         <p className="mt-1 text-xs text-yes-muted">{game.provider}</p>
       </div>
       <div className="mt-4 flex items-center justify-between border-t border-yes-line pt-3 text-xs text-yes-muted">
-        <span>From {formatDkk(game.minStakeDkk)}</span>
+        <span>{game.dkkSupported ? "DKK ready" : "Market check"}</span>
         <span>{game.score} pts</span>
       </div>
     </article>
