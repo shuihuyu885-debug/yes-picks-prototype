@@ -22,7 +22,6 @@ export function HeroTile({ heroDecision, onCtaClick, onInfoClick }: HeroTileProp
     // Daily Picks hero = reward/promotion state with key conditions visible.
     return (
       <WireframeHeroShell
-        ctaLabel="View picks"
         infoLabel="View Daily Picks details"
         onCtaClick={onCtaClick}
         onInfoClick={onInfoClick}
@@ -144,9 +143,9 @@ function WireframeHeroShell({
   ribbonLabel,
 }: {
   children: ReactNode;
-  ctaLabel: string;
+  ctaLabel?: string;
   infoLabel: string;
-  onCtaClick: () => void;
+  onCtaClick?: () => void;
   onInfoClick: () => void;
   ribbonLabel: string;
 }) {
@@ -168,14 +167,16 @@ function WireframeHeroShell({
       >
         i
       </button>
-      <button
-        aria-label={ctaLabel}
-        className="absolute bottom-2.5 left-[61px] flex h-11 w-40 items-center justify-center rounded-lg border border-white bg-[#4a5259] text-sm font-bold text-white transition hover:bg-[#3f474e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        onClick={onCtaClick}
-        type="button"
-      >
-        {ctaLabel}
-      </button>
+      {ctaLabel && onCtaClick ? (
+        <button
+          aria-label={ctaLabel}
+          className="absolute bottom-2.5 left-[61px] flex h-11 w-40 items-center justify-center rounded-lg border border-white bg-[#4a5259] text-sm font-bold text-white transition hover:bg-[#3f474e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          onClick={onCtaClick}
+          type="button"
+        >
+          {ctaLabel}
+        </button>
+      ) : null}
     </article>
   );
 }
