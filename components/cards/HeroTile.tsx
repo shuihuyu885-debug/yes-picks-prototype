@@ -46,34 +46,7 @@ export function HeroTile({ heroDecision, onCtaClick, onInfoClick }: HeroTileProp
 
   if (heroDecision.heroType === "jackpot-pool") {
     // Jackpot hero = jackpot pool discovery, not a single game promotion.
-    return (
-      <WireframeHeroShell
-        ctaLabel="View pool"
-        infoLabel="View Yes Pots details"
-        onCtaClick={onCtaClick}
-        onInfoClick={onInfoClick}
-        ribbonLabel="Pool"
-      >
-        <div className="flex h-full flex-col px-5 pb-16 pt-7 text-white">
-          <h3 className="text-center text-[1.25rem] font-bold italic leading-6">Yes Pots</h3>
-          <p className="mx-auto mt-2 max-w-[150px] text-center text-xs font-medium leading-4 text-white/90">
-            4 games linked to the same jackpot pool
-          </p>
-          <div className="mt-4 space-y-1.5">
-            {jackpotTiers.map(([label, value]) => (
-              <div key={label} className="rounded-full bg-white/35 px-3 py-1">
-                <p className="text-center text-[0.64rem] font-semibold italic leading-3 text-white">
-                  {label}
-                </p>
-                <p className="mt-0.5 rounded-full bg-[#4a5259] px-2 py-0.5 text-center text-[0.68rem] font-bold leading-3 text-white tabular-nums">
-                  {value}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </WireframeHeroShell>
-    );
+    return <JackpotPoolHero onCtaClick={onCtaClick} onInfoClick={onInfoClick} />;
   }
 
   // Featured hero = content/editorial/business priority.
@@ -89,6 +62,76 @@ export function HeroTile({ heroDecision, onCtaClick, onInfoClick }: HeroTileProp
         <h3 className="text-[1.35rem] font-normal italic leading-7 text-white">Promoted Game</h3>
       </div>
     </WireframeHeroShell>
+  );
+}
+
+function JackpotPoolHero({
+  onCtaClick,
+  onInfoClick,
+}: {
+  onCtaClick: () => void;
+  onInfoClick: () => void;
+}) {
+  return (
+    <article className="relative h-[290px] w-[470px] shrink-0 overflow-hidden rounded-lg bg-[#626262] text-white">
+      <div className="absolute inset-y-0 left-[221px] w-[249px] rounded-r-lg bg-white" />
+      <div className="absolute inset-y-0 left-[181px] w-[138px] overflow-hidden">
+        <div className="absolute left-[23px] top-[-37px] h-[97px] w-[102px] rounded-full bg-white" />
+        <div className="absolute left-[23px] top-[30px] h-[97px] w-[102px] rounded-full bg-white" />
+        <div className="absolute left-[8px] top-[75px] h-[127px] w-[102px] rounded-full bg-white" />
+        <div className="absolute left-[23px] top-[133px] h-[127px] w-[102px] rounded-full bg-white" />
+        <div className="absolute left-[23px] top-[217px] h-[97px] w-[102px] rounded-full bg-white" />
+      </div>
+
+      <div className="pointer-events-none absolute left-1 top-10 h-7 w-7 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-5 top-4 h-3.5 w-3.5 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-[108px] top-1 h-10 w-10 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-[105px] top-12 h-3.5 w-3.5 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-[166px] top-[125px] h-3.5 w-3.5 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-[188px] top-20 h-3.5 w-3.5 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-[166px] top-[197px] h-7 w-7 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-3 top-[164px] h-4 w-4 rounded-full border-2 border-white/25" />
+      <div className="pointer-events-none absolute left-0 top-[209px] h-7 w-7 rounded-full border-2 border-white/25" />
+
+      <div className="absolute left-0 top-0 h-full w-[221px] px-4 py-5">
+        <h3 className="text-center text-xl font-semibold italic leading-5">Yes POTS!</h3>
+        <div className="mt-4 flex flex-col gap-[7px]">
+          {jackpotTiers.map(([label, value]) => (
+            <div key={label} className="h-[49px] w-[160px] rounded-full bg-[#b1b1b1] pt-[1px]">
+              <p className="flex h-[23px] items-center justify-center text-center text-sm font-semibold italic leading-4 text-white">
+                {label}
+              </p>
+              <p className="mx-auto flex h-[25px] w-[135px] items-center justify-center rounded-full bg-[#707070] px-2 text-center text-sm font-semibold italic leading-4 text-white tabular-nums">
+                {value.replace(",", "")}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute left-[228px] top-4 grid h-[258px] w-[235px] grid-cols-2 grid-rows-2 gap-x-3 gap-y-4">
+        {["Game 1", "Game 2", "Game 3", "Game 4"].map((label) => (
+          <button
+            key={label}
+            aria-label={`View ${label} linked to Yes Pots`}
+            className="flex items-center justify-center rounded-t-[58px] rounded-b-lg bg-[#b1b1b1] px-3 text-center text-base font-bold italic leading-5 text-white"
+            onClick={onCtaClick}
+            type="button"
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <button
+        aria-label="View Yes Pots details"
+        className="sr-only"
+        onClick={onInfoClick}
+        type="button"
+      >
+        View details
+      </button>
+    </article>
   );
 }
 

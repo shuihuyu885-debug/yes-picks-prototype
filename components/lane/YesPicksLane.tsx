@@ -44,7 +44,13 @@ export function YesPicksLane({
       <div className="scrollbar-none -mx-5 overflow-x-auto px-[11px] pb-1">
         <div className="grid w-max grid-flow-col grid-rows-[142px_142px] gap-[6px]">
           {hasHero ? (
-            <div className="row-span-2 h-[290px] w-[231px]">
+            <div
+              className={
+                heroDecision.heroType === "jackpot-pool"
+                  ? "row-span-2 h-[290px] w-[470px]"
+                  : "row-span-2 h-[290px] w-[231px]"
+              }
+            >
               <HeroTile
                 game={heroTileGame}
                 heroDecision={heroDecision}
@@ -55,7 +61,13 @@ export function YesPicksLane({
           ) : null}
 
           {supportingGames.map((game, index) => (
-            <GameCard key={game.id} game={game} index={index} onClick={onGameClick} />
+            <GameCard
+              key={game.id}
+              game={game}
+              index={index}
+              scenarioId={scenario.id}
+              onClick={onGameClick}
+            />
           ))}
         </div>
       </div>

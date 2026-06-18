@@ -1,17 +1,18 @@
 "use client";
 
-import type { RankedGame } from "@/lib/types";
+import type { RankedGame, ScenarioId } from "@/lib/types";
 
 type GameCardProps = {
   game: RankedGame;
   index?: number;
+  scenarioId?: ScenarioId;
   onClick: (game: RankedGame) => void;
 };
 
-export function GameCard({ game, index = 0, onClick }: GameCardProps) {
-  const badge = getGameBadge(game, index);
-  const title = getWireframeTitle(game, index);
-  const prizeLabel = getPrizeLabel(game);
+export function GameCard({ game, index = 0, scenarioId, onClick }: GameCardProps) {
+  const badge = getGameBadge(game, index, scenarioId);
+  const title = getWireframeTitle(game, index, scenarioId);
+  const prizeLabel = getPrizeLabel(game, index, scenarioId);
 
   return (
     <button
@@ -42,7 +43,11 @@ export function GameCard({ game, index = 0, onClick }: GameCardProps) {
   );
 }
 
-function getGameBadge(game: RankedGame, index: number) {
+function getGameBadge(game: RankedGame, index: number, scenarioId?: ScenarioId) {
+  if (scenarioId === "jackpot-event-available") {
+    return [0, 4, 6, 8].includes(index) ? "yes Exclusive" : undefined;
+  }
+
   if (game.isExclusive || index === 0) {
     return "yes Exclusive";
   }
@@ -50,7 +55,24 @@ function getGameBadge(game: RankedGame, index: number) {
   return undefined;
 }
 
-function getWireframeTitle(game: RankedGame, index: number) {
+function getWireframeTitle(game: RankedGame, index: number, scenarioId?: ScenarioId) {
+  if (scenarioId === "jackpot-event-available") {
+    const jackpotLabels = [
+      "Exclusive Tier 1 Game",
+      "Top Local-Market Games",
+      "Top Global Game",
+      "Top Global Table Game",
+      "Exclusive Tier2 Game",
+      "New Game",
+      "Exclusive Tier2 Game",
+      "Tier 2 Game",
+      "Exclusive Tier2 Game",
+      "Tier 2 Game",
+    ];
+
+    return jackpotLabels[index] ?? "Tier 2 Game";
+  }
+
   if (game.isExclusive || index === 0) {
     return "Exclusive Tier 1 Game";
   }
@@ -74,7 +96,11 @@ function getWireframeTitle(game: RankedGame, index: number) {
   return game.isNew ? "New Game" : "Tier 2 Game";
 }
 
-function getPrizeLabel(game: RankedGame) {
+function getPrizeLabel(game: RankedGame, index: number, scenarioId?: ScenarioId) {
+  if (scenarioId === "jackpot-event-available") {
+    return [0, 1, 5, 7].includes(index) ? "DKK 2,434.32" : undefined;
+  }
+
   if (game.mockPrizeLabel || game.isJackpotLinked || game.isExclusive) {
     return "DKK 2,434.32";
   }
