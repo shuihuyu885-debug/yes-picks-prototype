@@ -43,7 +43,7 @@ export function YesPicksLane({
       className={clsx(
         "relative rounded-lg transition-shadow duration-200",
         highlighted &&
-          "z-10 outline outline-4 outline-offset-4 outline-red-500 shadow-[0_0_0_9999px_rgba(15,23,42,0.16),0_0_26px_rgba(239,68,68,0.5)]",
+          "z-10 shadow-[0_0_0_9999px_rgba(15,23,42,0.14),0_0_18px_rgba(255,255,255,0.35)]",
       )}
       data-annotation-target="yes-picks-lane"
     >

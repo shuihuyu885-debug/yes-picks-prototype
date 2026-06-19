@@ -2,7 +2,7 @@
 
 import { clsx } from "clsx";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 export type AnnotationId = 1 | 2 | 3;
@@ -18,44 +18,56 @@ type AnnotationContent = {
   body: string[];
   bullets?: string[];
   footer?: string;
-  markerY: number;
   title: string;
 };
 
-const annotations: Record<AnnotationId, AnnotationContent> = {
+const markerPositions: Record<
+  AnnotationId,
+  { markerY: number; segmentHeight: number; segmentTop: number }
+> = {
   1: {
-    body: [
-      "Reserved for broad campaign messaging or high-level lobby communication. This area is not specific enough for Yes Picks because it is usually owned by wider promotional or brand messaging.",
-    ],
-    markerY: 245,
-    title: "Top lobby campaign area",
+    markerY: 261,
+    segmentHeight: 188,
+    segmentTop: 167,
   },
   2: {
-    body: [
-      "The first lane is usually a single-message hero - one banner, one push. Yes Picks sits directly below it because this is the first scrollable, multi-game slot with enough width to show breadth instead of one bet.",
-      "It makes sense here for the concentrated best of everything Yes recommends:",
-    ],
-    bullets: [
-      "strong pushes such as promoted or strategic content",
-      "hottest content such as top games by local and global market performance",
-      "recently played games for personalisation",
-      "strongest pull for returning players",
-    ],
-    footer:
-      "This position gives Yes Picks the highest-visibility scrollable slot without competing with the top campaign banner.",
-    markerY: 505,
-    title: "Why Yes Picks sits in the second lane",
+    markerY: 531,
+    segmentHeight: 331,
+    segmentTop: 365,
   },
   3: {
-    body: [
-      "Lower content rows can support broader discovery, category browsing and secondary recommendations, but they are less suitable for the first decision-making lane.",
-    ],
-    markerY: 755,
-    title: "Lower lobby content",
+    markerY: 839,
+    segmentHeight: 233,
+    segmentTop: 723,
   },
 };
 
+const markerLabels: Record<AnnotationId, string> = {
+  1: "Top lobby campaign area",
+  2: "Why Yes Picks sits in the second lane",
+  3: "Lower lobby content",
+};
+
+const yesPicksPositionNote: AnnotationContent = {
+  body: [
+    "The first lane is usually a single-message hero - one banner, one push. Yes Picks sits directly below it because this is the first scrollable, multi-game slot with enough width to show breadth instead of one bet.",
+    "It makes sense here for the concentrated best of everything Yes recommends:",
+  ],
+  bullets: [
+    "strong pushes such as promoted or strategic content",
+    "hottest content such as top games by local and global market performance",
+    "recently played games for personalisation",
+    "strongest pull for returning players",
+  ],
+  footer:
+    "This position gives Yes Picks the highest-visibility scrollable slot without competing with the top campaign banner.",
+  title: "Why Yes Picks sits in the second lane",
+};
+
 const markerIds: AnnotationId[] = [1, 2, 3];
+const annotationRed = "#ff0b1a";
+const verticalNoteWidth = 312;
+const dashlineLeftOffset = 7;
 
 export function AnnotationRail({
   activeAnnotation,
@@ -63,8 +75,10 @@ export function AnnotationRail({
   layout,
   onAnnotationChange,
 }: AnnotationRailProps) {
+  const railRef = useRef<HTMLDivElement | null>(null);
   const [pinnedAnnotation, setPinnedAnnotation] = useState<AnnotationId | null>(null);
-  const activeContent = activeAnnotation ? annotations[activeAnnotation] : null;
+  const [verticalNotePosition, setVerticalNotePosition] = useState<CSSProperties | null>(null);
+  const activeContent = activeAnnotation === 2 ? yesPicksPositionNote : null;
 
   useEffect(() => {
     if (!activeAnnotation) {
@@ -83,7 +97,45 @@ export function AnnotationRail({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeAnnotation, onAnnotationChange]);
 
+  useEffect(() => {
+    if (layout !== "vertical" || activeAnnotation !== 2) {
+      setVerticalNotePosition(null);
+      return;
+    }
+
+    function updateNotePosition() {
+      const rail = railRef.current;
+
+      if (!rail) {
+        return;
+      }
+
+      const railRect = rail.getBoundingClientRect();
+      const dashlineLeft = railRect.left + dashlineLeftOffset;
+
+      setVerticalNotePosition({
+        left: dashlineLeft - verticalNoteWidth,
+        position: "fixed",
+        top: railRect.top + markerPositions[2].markerY,
+        width: verticalNoteWidth,
+      });
+    }
+
+    updateNotePosition();
+    window.addEventListener("resize", updateNotePosition);
+    window.addEventListener("scroll", updateNotePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updateNotePosition);
+      window.removeEventListener("scroll", updateNotePosition, true);
+    };
+  }, [activeAnnotation, layout]);
+
   function handleMarkerEnter(annotation: AnnotationId) {
+    if (annotation !== 2) {
+      return;
+    }
+
     if (!pinnedAnnotation) {
       onAnnotationChange(annotation);
     }
@@ -96,6 +148,10 @@ export function AnnotationRail({
   }
 
   function handleMarkerClick(annotation: AnnotationId) {
+    if (annotation !== 2) {
+      return;
+    }
+
     if (pinnedAnnotation === annotation) {
       setPinnedAnnotation(null);
       onAnnotationChange(null);
@@ -115,26 +171,29 @@ export function AnnotationRail({
     return (
       <div className={clsx("relative w-full", className)} onMouseLeave={handleRailLeave}>
         <div className="flex items-center justify-center gap-3">
-          {markerIds.map((marker) => (
-            <AnnotationMarker
-              activeAnnotation={activeAnnotation}
-              key={marker}
-              marker={marker}
-              onClick={() => handleMarkerClick(marker)}
-              onFocus={() => handleMarkerEnter(marker)}
-              onMouseEnter={() => handleMarkerEnter(marker)}
-              pinned={pinnedAnnotation === marker}
+          {activeContent ? (
+            <AnnotationNote
+              annotation={activeContent}
+              className="min-w-0 max-w-[300px] flex-1"
+              onClose={handleClose}
+              withPointer
             />
-          ))}
-        </div>
+          ) : null}
 
-        {activeContent ? (
-          <AnnotationNote
-            annotation={activeContent}
-            className="mt-3 w-full"
-            onClose={handleClose}
-          />
-        ) : null}
+          <div className="flex shrink-0 items-center gap-2">
+            {markerIds.map((marker) => (
+              <AnnotationMarker
+                activeAnnotation={activeAnnotation}
+                key={marker}
+                marker={marker}
+                onClick={() => handleMarkerClick(marker)}
+                onFocus={() => handleMarkerEnter(marker)}
+                onMouseEnter={() => handleMarkerEnter(marker)}
+                pinned={pinnedAnnotation === marker}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -144,16 +203,22 @@ export function AnnotationRail({
       aria-label="Lane position annotation rail"
       className={clsx("relative h-[956px] w-8 shrink-0", className)}
       onMouseLeave={handleRailLeave}
+      ref={railRef}
     >
-      <RailSegment active={activeAnnotation === 1} height={190} top={142} />
-      <RailSegment active={activeAnnotation === 2} height={270} top={372} />
-      <RailSegment active={activeAnnotation === 3} height={190} top={675} />
+      {markerIds.map((marker) => (
+        <RailSegment
+          height={markerPositions[marker].segmentHeight}
+          highlighted={marker === 2}
+          key={`segment-${marker}`}
+          top={markerPositions[marker].segmentTop}
+        />
+      ))}
 
       {markerIds.map((marker) => (
         <div
-          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-[22px] -translate-x-1/2 -translate-y-1/2"
           key={marker}
-          style={{ top: annotations[marker].markerY }}
+          style={{ top: markerPositions[marker].markerY }}
         >
           <AnnotationMarker
             activeAnnotation={activeAnnotation}
@@ -166,29 +231,48 @@ export function AnnotationRail({
         </div>
       ))}
 
-      {activeContent && activeAnnotation ? (
+      {activeContent && verticalNotePosition ? (
         <AnnotationNote
           annotation={activeContent}
-          className="absolute right-[calc(100%+0.75rem)] w-[300px] -translate-y-1/2"
+          className="-translate-y-1/2"
           onClose={handleClose}
-          style={{ top: annotations[activeAnnotation].markerY }}
-          withPointer
+          style={verticalNotePosition}
         />
       ) : null}
     </div>
   );
 }
 
-function RailSegment({ active, height, top }: { active: boolean; height: number; top: number }) {
+function RailSegment({
+  height,
+  highlighted,
+  top,
+}: {
+  height: number;
+  highlighted: boolean;
+  top: number;
+}) {
+  const color = highlighted ? annotationRed : "rgba(255,255,255,0.88)";
+
   return (
-    <span
+    <svg
       aria-hidden="true"
-      className={clsx(
-        "absolute left-1/2 -translate-x-1/2 border-l-2 border-dashed transition-colors",
-        active ? "border-red-500" : "border-white/55",
-      )}
-      style={{ height, top }}
-    />
+      className="absolute left-0 w-7"
+      fill="none"
+      height={height}
+      style={{ top }}
+      viewBox={`0 0 28 ${height}`}
+      width="28"
+    >
+      <path
+        d={`M24 1 H14 C9 1 7 5 7 10 V${height - 10} C7 ${height - 5} 9 ${height - 1} 14 ${height - 1} H24`}
+        stroke={color}
+        strokeDasharray="2 6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
   );
 }
 
@@ -209,24 +293,34 @@ function AnnotationMarker({
 }) {
   const isActive = activeAnnotation === marker;
   const isPrimary = marker === 2;
+  const content = marker;
+
+  if (!isPrimary) {
+    return (
+      <span
+        aria-label={`${markerLabels[marker]} marker`}
+        className="grid h-7 w-7 place-items-center rounded-full bg-black text-base font-black leading-none text-white shadow-sm ring-1 ring-white/15"
+        role="img"
+      >
+        {content}
+      </span>
+    );
+  }
 
   return (
     <button
       aria-expanded={isActive}
-      aria-label={`Show note for ${annotations[marker].title}`}
+      aria-label={`Show note for ${markerLabels[marker]}`}
       aria-pressed={pinned}
       className={clsx(
-        "grid h-8 w-8 place-items-center rounded-full border text-sm font-black shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
-        isPrimary && isActive
-          ? "border-red-400 bg-red-500 text-white shadow-red-500/40"
-          : "border-white/35 bg-[#5b5f63] text-white hover:border-white/70",
+        "grid h-7 w-7 place-items-center rounded-full bg-[#ff0b1a] text-base font-black leading-none text-white shadow-sm transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
       )}
       onClick={onClick}
       onFocus={onFocus}
       onMouseEnter={onMouseEnter}
       type="button"
     >
-      {marker}
+      {content}
     </button>
   );
 }
