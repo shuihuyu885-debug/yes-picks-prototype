@@ -52,7 +52,7 @@ export function ImplementationDetailsTabs({ hero, scenario }: ImplementationDeta
       <div className="rounded-lg border border-yes-line bg-[#222]">
         <div
           aria-label="Implementation detail sections"
-          className="grid grid-cols-4 gap-1 p-1"
+          className="grid grid-cols-2 gap-1 p-1 sm:grid-cols-4"
           role="tablist"
         >
           {tabs.map((tab) => {
