@@ -2,7 +2,7 @@
 
 import { clsx } from "clsx";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 export type AnnotationId = 1 | 2 | 3;
@@ -26,19 +26,19 @@ const markerPositions: Record<
   { markerY: number; segmentHeight: number; segmentTop: number }
 > = {
   1: {
-    markerY: 245,
-    segmentHeight: 158,
-    segmentTop: 166,
+    markerY: 261,
+    segmentHeight: 188,
+    segmentTop: 167,
   },
   2: {
-    markerY: 505,
-    segmentHeight: 265,
-    segmentTop: 378,
+    markerY: 531,
+    segmentHeight: 331,
+    segmentTop: 365,
   },
   3: {
-    markerY: 755,
-    segmentHeight: 186,
-    segmentTop: 674,
+    markerY: 839,
+    segmentHeight: 233,
+    segmentTop: 723,
   },
 };
 
@@ -65,6 +65,9 @@ const yesPicksPositionNote: AnnotationContent = {
 };
 
 const markerIds: AnnotationId[] = [1, 2, 3];
+const annotationRed = "#ff0b1a";
+const verticalNoteWidth = 312;
+const dashlineLeftOffset = 7;
 
 export function AnnotationRail({
   activeAnnotation,
@@ -72,7 +75,9 @@ export function AnnotationRail({
   layout,
   onAnnotationChange,
 }: AnnotationRailProps) {
+  const railRef = useRef<HTMLDivElement | null>(null);
   const [pinnedAnnotation, setPinnedAnnotation] = useState<AnnotationId | null>(null);
+  const [verticalNotePosition, setVerticalNotePosition] = useState<CSSProperties | null>(null);
   const activeContent = activeAnnotation === 2 ? yesPicksPositionNote : null;
 
   useEffect(() => {
@@ -91,6 +96,40 @@ export function AnnotationRail({
 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeAnnotation, onAnnotationChange]);
+
+  useEffect(() => {
+    if (layout !== "vertical" || activeAnnotation !== 2) {
+      setVerticalNotePosition(null);
+      return;
+    }
+
+    function updateNotePosition() {
+      const rail = railRef.current;
+
+      if (!rail) {
+        return;
+      }
+
+      const railRect = rail.getBoundingClientRect();
+      const dashlineLeft = railRect.left + dashlineLeftOffset;
+
+      setVerticalNotePosition({
+        left: dashlineLeft - verticalNoteWidth,
+        position: "fixed",
+        top: railRect.top + markerPositions[2].markerY,
+        width: verticalNoteWidth,
+      });
+    }
+
+    updateNotePosition();
+    window.addEventListener("resize", updateNotePosition);
+    window.addEventListener("scroll", updateNotePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updateNotePosition);
+      window.removeEventListener("scroll", updateNotePosition, true);
+    };
+  }, [activeAnnotation, layout]);
 
   function handleMarkerEnter(annotation: AnnotationId) {
     if (annotation !== 2) {
@@ -164,11 +203,12 @@ export function AnnotationRail({
       aria-label="Lane position annotation rail"
       className={clsx("relative h-[956px] w-8 shrink-0", className)}
       onMouseLeave={handleRailLeave}
+      ref={railRef}
     >
       {markerIds.map((marker) => (
         <RailSegment
-          active={activeAnnotation === marker}
           height={markerPositions[marker].segmentHeight}
+          highlighted={marker === 2}
           key={`segment-${marker}`}
           top={markerPositions[marker].segmentTop}
         />
@@ -191,21 +231,28 @@ export function AnnotationRail({
         </div>
       ))}
 
-      {activeContent && activeAnnotation ? (
+      {activeContent && verticalNotePosition ? (
         <AnnotationNote
           annotation={activeContent}
-          className="absolute right-[calc(100%+0.75rem)] w-[300px] -translate-y-1/2"
+          className="-translate-y-1/2"
           onClose={handleClose}
-          style={{ top: markerPositions[activeAnnotation].markerY }}
-          withPointer
+          style={verticalNotePosition}
         />
       ) : null}
     </div>
   );
 }
 
-function RailSegment({ active, height, top }: { active: boolean; height: number; top: number }) {
-  const color = active ? "#ff0b1a" : "rgba(255,255,255,0.88)";
+function RailSegment({
+  height,
+  highlighted,
+  top,
+}: {
+  height: number;
+  highlighted: boolean;
+  top: number;
+}) {
+  const color = highlighted ? annotationRed : "rgba(255,255,255,0.88)";
 
   return (
     <svg
@@ -266,10 +313,7 @@ function AnnotationMarker({
       aria-label={`Show note for ${markerLabels[marker]}`}
       aria-pressed={pinned}
       className={clsx(
-        "grid h-7 w-7 place-items-center rounded-full text-base font-black leading-none shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
-        isActive
-          ? "bg-[#ff0b1a] text-white shadow-red-500/40"
-          : "bg-black text-white ring-1 ring-white/15 hover:ring-white/45",
+        "grid h-7 w-7 place-items-center rounded-full bg-[#ff0b1a] text-base font-black leading-none text-white shadow-sm transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
       )}
       onClick={onClick}
       onFocus={onFocus}

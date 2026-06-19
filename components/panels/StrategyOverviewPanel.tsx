@@ -1,6 +1,13 @@
+"use client";
+
+import { useRef, useState } from "react";
 import { RankingStrategyCard } from "@/components/panels/RankingStrategyCard";
+import { SupportDocsModal } from "@/components/panels/SupportDocsModal";
 
 export function StrategyOverviewPanel() {
+  const [supportDocsOpen, setSupportDocsOpen] = useState(false);
+  const supportDocsButtonRef = useRef<HTMLButtonElement | null>(null);
+
   return (
     <div className="space-y-4">
       <header className="space-y-1">
@@ -8,7 +15,17 @@ export function StrategyOverviewPanel() {
           <span className="rounded-md bg-yes-green px-2 py-1 text-sm font-black leading-none text-yes-ink">
             yes
           </span>
-          <h1 className="text-xl font-black tracking-normal text-white">Yes Picks Prototype</h1>
+          <h1 className="min-w-0 flex-1 text-xl font-black tracking-normal text-white">
+            Yes Picks Prototype
+          </h1>
+          <button
+            className="shrink-0 rounded-lg border border-[#6DE27A] bg-[#10110E] px-3 py-1.5 text-xs font-semibold text-[#B9B7AA] transition hover:border-[#6DE27A] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6DE27A]"
+            onClick={() => setSupportDocsOpen(true)}
+            ref={supportDocsButtonRef}
+            type="button"
+          >
+            Support Docs
+          </button>
         </div>
         <p className="text-base font-semibold leading-5 text-yes-teal">
           Dynamic state-based casino carousel
@@ -49,6 +66,12 @@ export function StrategyOverviewPanel() {
           <RankingStrategyCard />
         </div>
       </section>
+
+      <SupportDocsModal
+        onClose={() => setSupportDocsOpen(false)}
+        open={supportDocsOpen}
+        returnFocusRef={supportDocsButtonRef}
+      />
     </div>
   );
 }

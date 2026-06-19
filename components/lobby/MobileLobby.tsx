@@ -236,11 +236,11 @@ function GenericSectionPlaceholder() {
         </h2>
       </div>
       <div className="bg-[#d6dce1] px-5 py-6">
-        <div className="flex gap-3 overflow-hidden">
-          {["", "", "", ""].map((_, index) => (
+        <div className="grid grid-cols-3 gap-3">
+          {["", "", ""].map((_, index) => (
             <div
               key={index}
-              className="h-[142px] w-[113px] shrink-0 rounded-lg bg-[#c6cad0]"
+              className="h-[142px] min-w-0 rounded-lg bg-[#c6cad0]"
               aria-hidden="true"
             />
           ))}
