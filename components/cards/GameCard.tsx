@@ -22,7 +22,7 @@ export function GameCard({ game, index = 0, scenarioId, onClick }: GameCardProps
       type="button"
     >
       {badge ? (
-        <div className="absolute inset-x-0 top-0 flex h-5 items-center justify-center gap-1 rounded-t-lg bg-[#4a5259] px-2 text-[0.62rem] text-white">
+        <div className="absolute inset-x-0 top-0 flex h-5 items-center justify-center gap-1 rounded-t-lg bg-[#4a5259] px-2 text-xs text-white">
           {badge === "yes Exclusive" ? <span className="font-black">yes</span> : null}
           <span>{badge.replace("yes ", "")}</span>
         </div>

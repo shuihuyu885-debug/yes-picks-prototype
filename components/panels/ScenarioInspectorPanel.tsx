@@ -1,19 +1,14 @@
 import { LaneAnatomy } from "@/components/panels/LaneAnatomy";
 import { ImplementationDetailsTabs } from "@/components/panels/ImplementationDetailsTabs";
 import { scenarioInspectorCopy } from "@/components/panels/reviewContent";
-import type { HeroDecision, RankedGame, Scenario } from "@/lib/types";
+import type { HeroDecision, Scenario } from "@/lib/types";
 
 type ScenarioInspectorPanelProps = {
   hero: HeroDecision;
-  rankedGames: RankedGame[];
   scenario: Scenario;
 };
 
-export function ScenarioInspectorPanel({
-  hero,
-  rankedGames,
-  scenario,
-}: ScenarioInspectorPanelProps) {
+export function ScenarioInspectorPanel({ hero, scenario }: ScenarioInspectorPanelProps) {
   const copy = scenarioInspectorCopy[scenario.id];
 
   return (
@@ -51,7 +46,7 @@ export function ScenarioInspectorPanel({
         </article>
       </section>
 
-      <LaneAnatomy hero={hero} rankedGames={rankedGames} scenario={scenario} />
+      <LaneAnatomy scenario={scenario} />
       <ImplementationDetailsTabs hero={hero} scenario={scenario} />
     </div>
   );

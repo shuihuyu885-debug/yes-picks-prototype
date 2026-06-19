@@ -152,7 +152,7 @@ function WireframeHeroShell({
   return (
     <article className="relative h-[290px] w-[231px] shrink-0 overflow-hidden rounded-lg bg-[#8c96a1] text-white">
       <div className="absolute left-0 top-0 z-10 h-[63px] w-[49px] bg-white shadow-[0_6px_9px_rgba(44,51,57,0.32)] [clip-path:polygon(0_0,100%_0,100%_88%,0_100%)]">
-        <span className="flex h-full items-center justify-center px-1 text-center text-[0.68rem] font-black uppercase leading-3 text-black">
+        <span className="flex h-full items-center justify-center px-1 text-center text-xs font-black uppercase leading-3 text-black">
           {ribbonLabel}
         </span>
       </div>
