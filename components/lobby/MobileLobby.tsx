@@ -28,6 +28,7 @@ const bottomNav = [
 ];
 
 type MobileLobbyProps = {
+  highlightYesPicks?: boolean;
   scenarioId?: ScenarioId;
 };
 
@@ -84,7 +85,10 @@ const ctaSheetByHero: Record<Exclude<HeroType, "none">, SheetContent> = {
   },
 };
 
-export function MobileLobby({ scenarioId = "new-player" }: MobileLobbyProps) {
+export function MobileLobby({
+  highlightYesPicks = false,
+  scenarioId = "new-player",
+}: MobileLobbyProps) {
   const [sheet, setSheet] = useState<SheetContent | null>(null);
 
   const handleInfoClick = (heroType: HeroType, scenario: Scenario) => {
@@ -130,6 +134,7 @@ export function MobileLobby({ scenarioId = "new-player" }: MobileLobbyProps) {
           <HeroPlaceholder />
           <div className="mt-[10px] px-5">
             <YesPicksLane
+              highlighted={highlightYesPicks}
               onCtaClick={handleCtaClick}
               onGameClick={handleGameClick}
               onInfoClick={handleInfoClick}
@@ -264,7 +269,7 @@ function BottomNav() {
             >
               <span className="flex w-full min-w-0 flex-col items-center justify-center gap-0.5 px-1 text-center">
                 <Icon aria-hidden="true" className="h-[22px] w-[22px] shrink-0 stroke-[1.7]" />
-                <span className="block w-full truncate text-[0.62rem] font-medium leading-none">
+                <span className="block w-full truncate text-xs font-medium leading-none">
                   {item.label}
                 </span>
               </span>

@@ -14,7 +14,7 @@ export function StrategyOverviewPanel() {
           Dynamic state-based casino carousel
         </p>
         <p className="max-w-[27rem] text-base leading-5 text-yes-muted">
-          Control the scenario and review how the mobile Yes Picks carousel changes on the right.
+          Control the scenario and review how the mobile Yes Picks carousel changes in the preview.
         </p>
       </header>
 
